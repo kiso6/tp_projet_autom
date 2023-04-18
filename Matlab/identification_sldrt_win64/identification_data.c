@@ -6,9 +6,9 @@
  *
  * Code generation for model "identification".
  *
- * Model version              : 1.2
+ * Model version              : 1.7
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue Apr 11 11:00:52 2023
+ * C source code generated on : Tue Apr 18 08:53:14 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -45,7 +45,7 @@ P_identification_T identification_P = {
   /* Mask Parameter: ChirpSignal_T
    * Referenced by: '<S1>/targetTime'
    */
-  100.0,
+  120.0,
 
   /* Mask Parameter: AnalogOutput_YieldWhenWaiting
    * Referenced by: '<Root>/Analog Output'
@@ -62,12 +62,12 @@ P_identification_T identification_P = {
    *   '<S1>/deltaFreq'
    *   '<S1>/initialFreq'
    */
-  0.1,
+  0.001,
 
   /* Mask Parameter: ChirpSignal_f2
    * Referenced by: '<S1>/deltaFreq'
    */
-  0.5,
+  5.0,
 
   /* Mask Parameter: AnalogOutput_Channels
    * Referenced by: '<Root>/Analog Output'
@@ -99,73 +99,73 @@ P_identification_T identification_P = {
    */
   0,
 
-  /* Expression: 3
+  /* Expression: 1
    * Referenced by: '<Root>/Gain'
    */
-  3.0,
+  1.0,
 
-  /* Expression: 3
-   * Referenced by: '<Root>/Sine Wave'
+  /* Expression: 1
+   * Referenced by: '<Root>/Step'
    */
-  3.0,
+  1.0,
+
+  /* Expression: 5
+   * Referenced by: '<Root>/Step'
+   */
+  5.0,
 
   /* Expression: -1
-   * Referenced by: '<Root>/Sine Wave'
+   * Referenced by: '<Root>/Step'
    */
   -1.0,
 
-  /* Expression: 0.7
+  /* Expression: 2
    * Referenced by: '<Root>/Sine Wave'
    */
-  0.7,
+  2.0,
+
+  /* Expression: 0
+   * Referenced by: '<Root>/Sine Wave'
+   */
+  0.0,
+
+  /* Expression: 0.5
+   * Referenced by: '<Root>/Sine Wave'
+   */
+  0.5,
 
   /* Computed Parameter: SineWave_Hsin
    * Referenced by: '<Root>/Sine Wave'
    */
-  0.0069999428334733904,
+  0.0004999999791666669,
 
   /* Computed Parameter: SineWave_HCos
    * Referenced by: '<Root>/Sine Wave'
    */
-  0.99997550010004155,
+  0.99999987500000265,
 
   /* Computed Parameter: SineWave_PSin
    * Referenced by: '<Root>/Sine Wave'
    */
-  -0.0069999428334733904,
+  -0.0004999999791666669,
 
   /* Computed Parameter: SineWave_PCos
    * Referenced by: '<Root>/Sine Wave'
    */
-  0.99997550010004155,
+  0.99999987500000265,
 
   /* Expression: 0.5
    * Referenced by: '<S1>/Gain'
    */
   0.5,
 
-  /* Expression: 1
-   * Referenced by: '<Root>/Pulse Generator'
+  /* Expression: 0.5
+   * Referenced by: '<Root>/Constant2'
    */
-  1.0,
-
-  /* Expression: 100000
-   * Referenced by: '<Root>/Pulse Generator'
-   */
-  100000.0,
-
-  /* Expression: 20
-   * Referenced by: '<Root>/Pulse Generator'
-   */
-  20.0,
-
-  /* Expression: 0
-   * Referenced by: '<Root>/Pulse Generator'
-   */
-  0.0,
+  0.5,
 
   /* Computed Parameter: ManualSwitch_CurrentSetting
    * Referenced by: '<Root>/Manual Switch'
    */
-  1U
+  0U
 };

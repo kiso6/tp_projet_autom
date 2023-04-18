@@ -6,9 +6,9 @@
  *
  * Code generation for model "identification".
  *
- * Model version              : 1.2
+ * Model version              : 1.7
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue Apr 11 11:00:52 2023
+ * C source code generated on : Tue Apr 18 08:53:14 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping

@@ -6,9 +6,9 @@
  *
  * Code generation for model "identification".
  *
- * Model version              : 1.2
+ * Model version              : 1.7
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue Apr 11 11:00:52 2023
+ * C source code generated on : Tue Apr 18 08:53:14 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -34,7 +34,7 @@ static double SLDRTBoardOptions0[] = {
 /* list of Simulink Desktop Real-Time timers */
 const int SLDRTTimerCount = 1;
 const double SLDRTTimers[2] = {
-  0.01, 0.0,
+  0.001, 0.0,
 };
 
 /* list of Simulink Desktop Real-Time boards */
@@ -66,15 +66,25 @@ void identification_output(void)
     identification_DW.systemEnable = 0;
   }
 
-  identification_B.SineWave = ((identification_DW.lastSin *
+  /* Step: '<Root>/Step' */
+  if (identification_M->Timing.t[1] < identification_P.Step_Time) {
+    rtb_Clock1 = identification_P.Step_Y0;
+  } else {
+    rtb_Clock1 = identification_P.Step_YFinal;
+  }
+
+  /* End of Step: '<Root>/Step' */
+
+  /* Sum: '<Root>/Sum1' incorporates:
+   *  Sin: '<Root>/Sine Wave'
+   */
+  identification_B.Sum1 = (((identification_DW.lastSin *
     identification_P.SineWave_PCos + identification_DW.lastCos *
     identification_P.SineWave_PSin) * identification_P.SineWave_HCos +
     (identification_DW.lastCos * identification_P.SineWave_PCos -
      identification_DW.lastSin * identification_P.SineWave_PSin) *
     identification_P.SineWave_Hsin) * identification_P.SineWave_Amp +
-    identification_P.SineWave_Bias;
-
-  /* End of Sin: '<Root>/Sine Wave' */
+    identification_P.SineWave_Bias) + rtb_Clock1;
 
   /* Clock: '<S1>/Clock1' */
   rtb_Clock1 = identification_M->Timing.t[0];
@@ -88,20 +98,8 @@ void identification_output(void)
     identification_P.ChirpSignal_f1) * 6.2831853071795862 /
     identification_P.ChirpSignal_T * identification_P.Gain_Gain_m;
 
-  /* DiscretePulseGenerator: '<Root>/Pulse Generator' */
-  identification_B.PulseGenerator = (identification_DW.clockTickCounter <
-    identification_P.PulseGenerator_Duty) && (identification_DW.clockTickCounter
-    >= 0) ? identification_P.PulseGenerator_Amp : 0.0;
-  if (identification_DW.clockTickCounter >=
-      identification_P.PulseGenerator_Period - 1.0) {
-    identification_DW.clockTickCounter = 0;
-  } else {
-    identification_DW.clockTickCounter++;
-  }
-
-  /* End of DiscretePulseGenerator: '<Root>/Pulse Generator' */
-
   /* ManualSwitch: '<Root>/Manual Switch' incorporates:
+   *  Constant: '<Root>/Constant2'
    *  Constant: '<S1>/initialFreq'
    *  Gain: '<Root>/Gain'
    *  Product: '<S1>/Product1'
@@ -111,11 +109,11 @@ void identification_output(void)
    *  Trigonometry: '<S1>/Output'
    */
   if (identification_P.ManualSwitch_CurrentSetting == 1) {
-    identification_B.tension = identification_B.SineWave;
+    identification_B.tension = identification_B.Sum1;
   } else {
     identification_B.tension = sin((rtb_Clock1 * identification_B.Gain +
       6.2831853071795862 * identification_P.ChirpSignal_f1) * rtb_Clock1) *
-      identification_P.Gain_Gain + identification_B.PulseGenerator;
+      identification_P.Gain_Gain + identification_P.Constant2_Value;
   }
 
   /* End of ManualSwitch: '<Root>/Manual Switch' */
@@ -150,7 +148,7 @@ void identification_output(void)
       double time = identification_M->Timing.t[1];
       void *pData = (void *)&identification_B.angle;
       int32_T size = 1*sizeof(real_T);
-      sendToAsyncQueueTgtAppSvc(1030653141U, time, pData, size);
+      sendToAsyncQueueTgtAppSvc(1731983012U, time, pData, size);
     }
   }
 
@@ -160,7 +158,7 @@ void identification_output(void)
       double time = identification_M->Timing.t[1];
       void *pData = (void *)&identification_B.tension;
       int32_T size = 1*sizeof(real_T);
-      sendToAsyncQueueTgtAppSvc(2418623268U, time, pData, size);
+      sendToAsyncQueueTgtAppSvc(1747989888U, time, pData, size);
     }
   }
 }
@@ -196,7 +194,7 @@ void identification_update(void)
     identification_M->Timing.stepSize0 * 4294967296.0;
 
   {
-    /* Update absolute timer for sample time: [0.01s, 0.0s] */
+    /* Update absolute timer for sample time: [0.001s, 0.0s] */
     /* The "clockTick1" counts the number of times the code of this task has
      * been executed. The absolute time is the multiplication of "clockTick1"
      * and "Timing.stepSize1". Size of "clockTick1" ensures timer will not
@@ -231,9 +229,6 @@ void identification_initialize(void)
                      &identification_P.AnalogOutput_InitialValue, &parm);
     }
   }
-
-  /* InitializeConditions for DiscretePulseGenerator: '<Root>/Pulse Generator' */
-  identification_DW.clockTickCounter = 0;
 
   /* Enable for Sin: '<Root>/Sine Wave' */
   identification_DW.systemEnable = 1;
@@ -334,7 +329,7 @@ RT_MODEL_identification_T *identification(void)
 
     /* task periods */
     identification_M->Timing.sampleTimes[0] = (0.0);
-    identification_M->Timing.sampleTimes[1] = (0.01);
+    identification_M->Timing.sampleTimes[1] = (0.001);
 
     /* task offsets */
     identification_M->Timing.offsetTimes[0] = (0.0);
@@ -350,15 +345,15 @@ RT_MODEL_identification_T *identification(void)
     identification_M->Timing.sampleHits = (&mdlSampleHits[0]);
   }
 
-  rtmSetTFinal(identification_M, 115.0);
-  identification_M->Timing.stepSize0 = 0.01;
-  identification_M->Timing.stepSize1 = 0.01;
+  rtmSetTFinal(identification_M, -1);
+  identification_M->Timing.stepSize0 = 0.001;
+  identification_M->Timing.stepSize1 = 0.001;
 
   /* External mode info */
-  identification_M->Sizes.checksums[0] = (1564174956U);
-  identification_M->Sizes.checksums[1] = (1877305172U);
-  identification_M->Sizes.checksums[2] = (3739085865U);
-  identification_M->Sizes.checksums[3] = (1254174079U);
+  identification_M->Sizes.checksums[0] = (2248274865U);
+  identification_M->Sizes.checksums[1] = (4150780595U);
+  identification_M->Sizes.checksums[2] = (3732532871U);
+  identification_M->Sizes.checksums[3] = (270198421U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -376,8 +371,8 @@ RT_MODEL_identification_T *identification(void)
   }
 
   identification_M->solverInfoPtr = (&identification_M->solverInfo);
-  identification_M->Timing.stepSize = (0.01);
-  rtsiSetFixedStepSize(&identification_M->solverInfo, 0.01);
+  identification_M->Timing.stepSize = (0.001);
+  rtsiSetFixedStepSize(&identification_M->solverInfo, 0.001);
   rtsiSetSolverMode(&identification_M->solverInfo, SOLVER_MODE_SINGLETASKING);
 
   /* block I/O */
@@ -416,8 +411,8 @@ RT_MODEL_identification_T *identification(void)
   identification_M->Sizes.numU = (0);  /* Number of model inputs */
   identification_M->Sizes.sysDirFeedThru = (0);/* The model is not direct feedthrough */
   identification_M->Sizes.numSampTimes = (2);/* Number of sample times */
-  identification_M->Sizes.numBlocks = (21);/* Number of blocks */
-  identification_M->Sizes.numBlockIO = (5);/* Number of block outputs */
+  identification_M->Sizes.numBlocks = (23);/* Number of blocks */
+  identification_M->Sizes.numBlockIO = (4);/* Number of block outputs */
   identification_M->Sizes.numBlockPrms = (29);/* Sum of parameter "widths" */
   return identification_M;
 }

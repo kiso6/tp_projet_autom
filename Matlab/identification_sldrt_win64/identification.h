@@ -6,9 +6,9 @@
  *
  * Code generation for model "identification".
  *
- * Model version              : 1.2
+ * Model version              : 1.7
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue Apr 11 11:00:52 2023
+ * C source code generated on : Tue Apr 18 08:53:14 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -852,9 +852,8 @@
 
 /* Block signals (default storage) */
 typedef struct {
-  real_T SineWave;                     /* '<Root>/Sine Wave' */
+  real_T Sum1;                         /* '<Root>/Sum1' */
   real_T Gain;                         /* '<S1>/Gain' */
-  real_T PulseGenerator;               /* '<Root>/Pulse Generator' */
   real_T tension;                      /* '<Root>/Manual Switch' */
   real_T angle;                        /* '<Root>/Analog Input' */
 } B_identification_T;
@@ -880,7 +879,6 @@ typedef struct {
   } TAQSigLogging_InsertedFor_ManualSwitch_at_outport_0_PWORK;/* synthesized block */
 
   int32_T systemEnable;                /* '<Root>/Sine Wave' */
-  int32_T clockTickCounter;            /* '<Root>/Pulse Generator' */
 } DW_identification_T;
 
 /* Backward compatible GRT Identifiers */
@@ -944,16 +942,25 @@ struct P_identification_T_ {
   int32_T AnalogInput_VoltRange;       /* Mask Parameter: AnalogInput_VoltRange
                                         * Referenced by: '<Root>/Analog Input'
                                         */
-  real_T Gain_Gain;                    /* Expression: 3
+  real_T Gain_Gain;                    /* Expression: 1
                                         * Referenced by: '<Root>/Gain'
                                         */
-  real_T SineWave_Amp;                 /* Expression: 3
+  real_T Step_Time;                    /* Expression: 1
+                                        * Referenced by: '<Root>/Step'
+                                        */
+  real_T Step_Y0;                      /* Expression: 5
+                                        * Referenced by: '<Root>/Step'
+                                        */
+  real_T Step_YFinal;                  /* Expression: -1
+                                        * Referenced by: '<Root>/Step'
+                                        */
+  real_T SineWave_Amp;                 /* Expression: 2
                                         * Referenced by: '<Root>/Sine Wave'
                                         */
-  real_T SineWave_Bias;                /* Expression: -1
+  real_T SineWave_Bias;                /* Expression: 0
                                         * Referenced by: '<Root>/Sine Wave'
                                         */
-  real_T SineWave_Freq;                /* Expression: 0.7
+  real_T SineWave_Freq;                /* Expression: 0.5
                                         * Referenced by: '<Root>/Sine Wave'
                                         */
   real_T SineWave_Hsin;                /* Computed Parameter: SineWave_Hsin
@@ -971,17 +978,8 @@ struct P_identification_T_ {
   real_T Gain_Gain_m;                  /* Expression: 0.5
                                         * Referenced by: '<S1>/Gain'
                                         */
-  real_T PulseGenerator_Amp;           /* Expression: 1
-                                        * Referenced by: '<Root>/Pulse Generator'
-                                        */
-  real_T PulseGenerator_Period;        /* Expression: 100000
-                                        * Referenced by: '<Root>/Pulse Generator'
-                                        */
-  real_T PulseGenerator_Duty;          /* Expression: 20
-                                        * Referenced by: '<Root>/Pulse Generator'
-                                        */
-  real_T PulseGenerator_PhaseDelay;    /* Expression: 0
-                                        * Referenced by: '<Root>/Pulse Generator'
+  real_T Constant2_Value;              /* Expression: 0.5
+                                        * Referenced by: '<Root>/Constant2'
                                         */
   uint8_T ManualSwitch_CurrentSetting;
                               /* Computed Parameter: ManualSwitch_CurrentSetting

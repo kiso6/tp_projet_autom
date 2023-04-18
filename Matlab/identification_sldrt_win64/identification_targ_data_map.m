@@ -109,51 +109,51 @@
 	  section.data(1).logicalSrcIdx = 15;
 	  section.data(1).dtTransOffset = 0;
 	
-	  ;% identification_P.SineWave_Amp
+	  ;% identification_P.Step_Time
 	  section.data(2).logicalSrcIdx = 16;
 	  section.data(2).dtTransOffset = 1;
 	
-	  ;% identification_P.SineWave_Bias
+	  ;% identification_P.Step_Y0
 	  section.data(3).logicalSrcIdx = 17;
 	  section.data(3).dtTransOffset = 2;
 	
-	  ;% identification_P.SineWave_Freq
+	  ;% identification_P.Step_YFinal
 	  section.data(4).logicalSrcIdx = 18;
 	  section.data(4).dtTransOffset = 3;
 	
-	  ;% identification_P.SineWave_Hsin
+	  ;% identification_P.SineWave_Amp
 	  section.data(5).logicalSrcIdx = 19;
 	  section.data(5).dtTransOffset = 4;
 	
-	  ;% identification_P.SineWave_HCos
+	  ;% identification_P.SineWave_Bias
 	  section.data(6).logicalSrcIdx = 20;
 	  section.data(6).dtTransOffset = 5;
 	
-	  ;% identification_P.SineWave_PSin
+	  ;% identification_P.SineWave_Freq
 	  section.data(7).logicalSrcIdx = 21;
 	  section.data(7).dtTransOffset = 6;
 	
-	  ;% identification_P.SineWave_PCos
+	  ;% identification_P.SineWave_Hsin
 	  section.data(8).logicalSrcIdx = 22;
 	  section.data(8).dtTransOffset = 7;
 	
-	  ;% identification_P.Gain_Gain_m
+	  ;% identification_P.SineWave_HCos
 	  section.data(9).logicalSrcIdx = 23;
 	  section.data(9).dtTransOffset = 8;
 	
-	  ;% identification_P.PulseGenerator_Amp
+	  ;% identification_P.SineWave_PSin
 	  section.data(10).logicalSrcIdx = 24;
 	  section.data(10).dtTransOffset = 9;
 	
-	  ;% identification_P.PulseGenerator_Period
+	  ;% identification_P.SineWave_PCos
 	  section.data(11).logicalSrcIdx = 25;
 	  section.data(11).dtTransOffset = 10;
 	
-	  ;% identification_P.PulseGenerator_Duty
+	  ;% identification_P.Gain_Gain_m
 	  section.data(12).logicalSrcIdx = 26;
 	  section.data(12).dtTransOffset = 11;
 	
-	  ;% identification_P.PulseGenerator_PhaseDelay
+	  ;% identification_P.Constant2_Value
 	  section.data(13).logicalSrcIdx = 27;
 	  section.data(13).dtTransOffset = 12;
 	
@@ -213,10 +213,10 @@
     ;%
     ;% Auto data (identification_B)
     ;%
-      section.nData     = 5;
-      section.data(5)  = dumData; %prealloc
+      section.nData     = 4;
+      section.data(4)  = dumData; %prealloc
       
-	  ;% identification_B.SineWave
+	  ;% identification_B.Sum1
 	  section.data(1).logicalSrcIdx = 0;
 	  section.data(1).dtTransOffset = 0;
 	
@@ -224,17 +224,13 @@
 	  section.data(2).logicalSrcIdx = 1;
 	  section.data(2).dtTransOffset = 1;
 	
-	  ;% identification_B.PulseGenerator
+	  ;% identification_B.tension
 	  section.data(3).logicalSrcIdx = 2;
 	  section.data(3).dtTransOffset = 2;
 	
-	  ;% identification_B.tension
+	  ;% identification_B.angle
 	  section.data(4).logicalSrcIdx = 3;
 	  section.data(4).dtTransOffset = 3;
-	
-	  ;% identification_B.angle
-	  section.data(5).logicalSrcIdx = 4;
-	  section.data(5).dtTransOffset = 4;
 	
       nTotData = nTotData + section.nData;
       sigMap.sections(1) = section;
@@ -323,16 +319,12 @@
       dworkMap.sections(2) = section;
       clear section
       
-      section.nData     = 2;
-      section.data(2)  = dumData; %prealloc
+      section.nData     = 1;
+      section.data(1)  = dumData; %prealloc
       
 	  ;% identification_DW.systemEnable
 	  section.data(1).logicalSrcIdx = 7;
 	  section.data(1).dtTransOffset = 0;
-	
-	  ;% identification_DW.clockTickCounter
-	  section.data(2).logicalSrcIdx = 8;
-	  section.data(2).dtTransOffset = 1;
 	
       nTotData = nTotData + section.nData;
       dworkMap.sections(3) = section;
@@ -364,8 +356,8 @@
   ;%
 
 
-  targMap.checksum0 = 1564174956;
-  targMap.checksum1 = 1877305172;
-  targMap.checksum2 = 3739085865;
-  targMap.checksum3 = 1254174079;
+  targMap.checksum0 = 2248274865;
+  targMap.checksum1 = 4150780595;
+  targMap.checksum2 = 3732532871;
+  targMap.checksum3 = 270198421;
 

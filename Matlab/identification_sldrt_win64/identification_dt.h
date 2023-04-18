@@ -6,9 +6,9 @@
  *
  * Code generation for model "identification".
  *
- * Model version              : 1.2
+ * Model version              : 1.7
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue Apr 11 11:00:52 2023
+ * C source code generated on : Tue Apr 18 08:53:14 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -57,14 +57,14 @@ static const char_T * rtDataTypeNames[] = {
 
 /* data type transitions for block I/O structure */
 static DataTypeTransition rtBTransitions[] = {
-  { (char_T *)(&identification_B.SineWave), 0, 0, 5 }
+  { (char_T *)(&identification_B.Sum1), 0, 0, 4 }
   ,
 
   { (char_T *)(&identification_DW.lastSin), 0, 0, 2 },
 
   { (char_T *)(&identification_DW.AnalogOutput_PWORK), 11, 0, 6 },
 
-  { (char_T *)(&identification_DW.systemEnable), 6, 0, 2 }
+  { (char_T *)(&identification_DW.systemEnable), 6, 0, 1 }
 };
 
 /* data type transition table for block I/O structure */
