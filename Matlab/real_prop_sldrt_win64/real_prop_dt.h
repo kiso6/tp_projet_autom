@@ -6,9 +6,9 @@
  *
  * Code generation for model "real_prop".
  *
- * Model version              : 1.5
+ * Model version              : 1.9
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue Apr 18 10:43:00 2023
+ * C source code generated on : Tue May  9 12:02:39 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -57,32 +57,32 @@ static const char_T * rtDataTypeNames[] = {
 
 /* data type transitions for block I/O structure */
 static DataTypeTransition rtBTransitions[] = {
-  { (char_T *)(&real_prop_B.u), 0, 0, 4 }
+  { (char_T *)(&real_prop_B.Step), 0, 0, 6 }
   ,
 
-  { (char_T *)(&real_prop_DW.Integrator_DSTATE), 0, 0, 2 },
-
-  { (char_T *)(&real_prop_DW.AnalogInput_PWORK), 11, 0, 5 }
+  { (char_T *)(&real_prop_DW.AnalogInput_PWORK), 11, 0, 6 }
 };
 
 /* data type transition table for block I/O structure */
 static DataTypeTransitionTable rtBTransTable = {
-  3U,
+  2U,
   rtBTransitions
 };
 
 /* data type transitions for Parameters structure */
 static DataTypeTransition rtPTransitions[] = {
-  { (char_T *)(&real_prop_P.Ki), 0, 0, 14 },
+  { (char_T *)(&real_prop_P.Ki), 0, 0, 17 },
 
   { (char_T *)(&real_prop_P.AnalogInput_Channels), 6, 0, 6 },
 
-  { (char_T *)(&real_prop_P.Step_Time), 0, 0, 5 }
+  { (char_T *)(&real_prop_P.Step_Time), 0, 0, 4 },
+
+  { (char_T *)(&real_prop_P.ManualSwitch_CurrentSetting), 3, 0, 1 }
 };
 
 /* data type transition table for Parameters structure */
 static DataTypeTransitionTable rtPTransTable = {
-  3U,
+  4U,
   rtPTransitions
 };
 

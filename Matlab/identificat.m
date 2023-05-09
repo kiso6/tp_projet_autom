@@ -7,12 +7,12 @@ close all;
 
 %Pseudo-Random
 N       = 5;
-Te      = 0.001; 
+Te      = 0.005; 
 Tr      = 2;
 P       =5;
 Plot    = 0;
 [u1,t1] = insa.prbs(Te,N,Tr,P,Plot);
-%% Commande
+%% Commande sur l'angle
 
 %step 1: essai du correcteur proportionnel, on voit que y'a de lerreur
 %statique
@@ -24,5 +24,13 @@ Plot    = 0;
 Kcorr=0.91078; %2.1317;       %6.8341; % Determinés avec sisotool
 Kp=5.8*Kcorr;
 Ki=Kcorr;
-G=-tf_ordre3;
+G=-tf_ordre4;
 Pi=tf([Kp Ki],[1 0]);
+
+FTBF = feedback(Pi*G, 1);
+step(FTBF)
+
+
+%% Identification position
+K_pos = 0.907
+

@@ -6,9 +6,9 @@
  *
  * Code generation for model "real_prop".
  *
- * Model version              : 1.5
+ * Model version              : 1.9
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue Apr 18 10:43:00 2023
+ * C source code generated on : Tue May  9 12:02:39 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -169,11 +169,11 @@
 #endif
 
 #ifndef rtmGetIntgData
-# define rtmGetIntgData(rtm)           ()
+# define rtmGetIntgData(rtm)           ((rtm)->intgData)
 #endif
 
 #ifndef rtmSetIntgData
-# define rtmSetIntgData(rtm, val)      ()
+# define rtmSetIntgData(rtm, val)      ((rtm)->intgData = (val))
 #endif
 
 #ifndef rtmGetMdlRefGlobalTID
@@ -329,19 +329,19 @@
 #endif
 
 #ifndef rtmGetOdeF
-# define rtmGetOdeF(rtm)               ()
+# define rtmGetOdeF(rtm)               ((rtm)->odeF)
 #endif
 
 #ifndef rtmSetOdeF
-# define rtmSetOdeF(rtm, val)          ()
+# define rtmSetOdeF(rtm, val)          ((rtm)->odeF = (val))
 #endif
 
 #ifndef rtmGetOdeY
-# define rtmGetOdeY(rtm)               ()
+# define rtmGetOdeY(rtm)               ((rtm)->odeY)
 #endif
 
 #ifndef rtmSetOdeY
-# define rtmSetOdeY(rtm, val)          ()
+# define rtmSetOdeY(rtm, val)          ((rtm)->odeY = (val))
 #endif
 
 #ifndef rtmGetOffsetTimeArray
@@ -761,7 +761,7 @@
 #endif
 
 #ifndef rtmIsContinuousTask
-# define rtmIsContinuousTask(rtm, tid) 0
+# define rtmIsContinuousTask(rtm, tid) ((tid) == 0)
 #endif
 
 #ifndef rtmGetErrorStatus
@@ -772,8 +772,16 @@
 # define rtmSetErrorStatus(rtm, val)   ((rtm)->errorStatus = (val))
 #endif
 
+#ifndef rtmIsMajorTimeStep
+# define rtmIsMajorTimeStep(rtm)       (((rtm)->Timing.simTimeStep) == MAJOR_TIME_STEP)
+#endif
+
+#ifndef rtmIsMinorTimeStep
+# define rtmIsMinorTimeStep(rtm)       (((rtm)->Timing.simTimeStep) == MINOR_TIME_STEP)
+#endif
+
 #ifndef rtmIsSampleHit
-# define rtmIsSampleHit(rtm, sti, tid) ((rtm)->Timing.sampleHits[(rtm)->Timing.sampleTimeTaskIDPtr[sti]])
+# define rtmIsSampleHit(rtm, sti, tid) ((rtmIsMajorTimeStep((rtm)) && (rtm)->Timing.sampleHits[(rtm)->Timing.sampleTimeTaskIDPtr[sti]]))
 #endif
 
 #ifndef rtmGetStopRequested
@@ -843,20 +851,20 @@
 
 /* Block signals (default storage) */
 typedef struct {
-  real_T u;                            /* '<Root>/Step' */
+  real_T Step;                         /* '<Root>/Step' */
+  real_T u;                            /* '<Root>/Manual Switch' */
   real_T y;                            /* '<Root>/Analog Input' */
-  real_T FilterCoefficient;            /* '<S36>/Filter Coefficient' */
-  real_T IntegralGain;                 /* '<S30>/Integral Gain' */
+  real_T FilterCoefficient;            /* '<S37>/Filter Coefficient' */
+  real_T Saturation;                   /* '<S41>/Saturation' */
+  real_T IntegralGain;                 /* '<S31>/Integral Gain' */
 } B_real_prop_T;
 
 /* Block states (default storage) for system '<Root>' */
 typedef struct {
-  real_T Integrator_DSTATE;            /* '<S33>/Integrator' */
-  real_T Filter_DSTATE;                /* '<S28>/Filter' */
   void *AnalogInput_PWORK;             /* '<Root>/Analog Input' */
   void *AnalogOutput_PWORK;            /* '<Root>/Analog Output' */
   struct {
-    void *LoggedData[2];
+    void *LoggedData[3];
   } Scope1_PWORK;                      /* '<Root>/Scope1' */
 
   struct {
@@ -865,9 +873,44 @@ typedef struct {
   } TAQSigLogging_InsertedFor_AnalogInput_at_outport_0_PWORK;/* synthesized block */
 } DW_real_prop_T;
 
+/* Continuous states (default storage) */
+typedef struct {
+  real_T Integrator_CSTATE;            /* '<S34>/Integrator' */
+  real_T Filter_CSTATE;                /* '<S29>/Filter' */
+} X_real_prop_T;
+
+/* State derivatives (default storage) */
+typedef struct {
+  real_T Integrator_CSTATE;            /* '<S34>/Integrator' */
+  real_T Filter_CSTATE;                /* '<S29>/Filter' */
+} XDot_real_prop_T;
+
+/* State disabled  */
+typedef struct {
+  boolean_T Integrator_CSTATE;         /* '<S34>/Integrator' */
+  boolean_T Filter_CSTATE;             /* '<S29>/Filter' */
+} XDis_real_prop_T;
+
+#ifndef ODE4_INTG
+#define ODE4_INTG
+
+/* ODE4 Integration Data */
+typedef struct {
+  real_T *y;                           /* output */
+  real_T *f[4];                        /* derivatives */
+} ODE4_IntgData;
+
+#endif
+
 /* Backward compatible GRT Identifiers */
 #define rtB                            real_prop_B
 #define BlockIO                        B_real_prop_T
+#define rtX                            real_prop_X
+#define ContinuousStates               X_real_prop_T
+#define rtXdot                         real_prop_XDot
+#define StateDerivatives               XDot_real_prop_T
+#define tXdis                          real_prop_XDis
+#define StateDisabled                  XDis_real_prop_T
 #define rtP                            real_prop_P
 #define Parameters                     P_real_prop_T
 #define rtDWork                        real_prop_DW
@@ -876,31 +919,34 @@ typedef struct {
 /* Parameters (default storage) */
 struct P_real_prop_T_ {
   real_T Ki;                           /* Variable: Ki
-                                        * Referenced by: '<S30>/Integral Gain'
+                                        * Referenced by: '<S31>/Integral Gain'
                                         */
   real_T Kp;                           /* Variable: Kp
-                                        * Referenced by: '<S38>/Proportional Gain'
+                                        * Referenced by: '<S39>/Proportional Gain'
                                         */
   real_T PIDController_D;              /* Mask Parameter: PIDController_D
-                                        * Referenced by: '<S27>/Derivative Gain'
+                                        * Referenced by: '<S28>/Derivative Gain'
                                         */
   real_T AnalogOutput_FinalValue;     /* Mask Parameter: AnalogOutput_FinalValue
                                        * Referenced by: '<Root>/Analog Output'
                                        */
   real_T PIDController_InitialConditionForFilter;
                       /* Mask Parameter: PIDController_InitialConditionForFilter
-                       * Referenced by: '<S28>/Filter'
+                       * Referenced by: '<S29>/Filter'
                        */
   real_T PIDController_InitialConditionForIntegrator;
                   /* Mask Parameter: PIDController_InitialConditionForIntegrator
-                   * Referenced by: '<S33>/Integrator'
+                   * Referenced by: '<S34>/Integrator'
                    */
+  real_T Ramp_InitialOutput;           /* Mask Parameter: Ramp_InitialOutput
+                                        * Referenced by: '<S2>/Constant1'
+                                        */
   real_T AnalogOutput_InitialValue; /* Mask Parameter: AnalogOutput_InitialValue
                                      * Referenced by: '<Root>/Analog Output'
                                      */
   real_T PIDController_LowerSaturationLimit;
                            /* Mask Parameter: PIDController_LowerSaturationLimit
-                            * Referenced by: '<S40>/Saturation'
+                            * Referenced by: '<S41>/Saturation'
                             */
   real_T AnalogInput_MaxMissedTicks;
                                    /* Mask Parameter: AnalogInput_MaxMissedTicks
@@ -911,11 +957,11 @@ struct P_real_prop_T_ {
                                    * Referenced by: '<Root>/Analog Output'
                                    */
   real_T PIDController_N;              /* Mask Parameter: PIDController_N
-                                        * Referenced by: '<S36>/Filter Coefficient'
+                                        * Referenced by: '<S37>/Filter Coefficient'
                                         */
   real_T PIDController_UpperSaturationLimit;
                            /* Mask Parameter: PIDController_UpperSaturationLimit
-                            * Referenced by: '<S40>/Saturation'
+                            * Referenced by: '<S41>/Saturation'
                             */
   real_T AnalogInput_YieldWhenWaiting;
                                  /* Mask Parameter: AnalogInput_YieldWhenWaiting
@@ -925,6 +971,14 @@ struct P_real_prop_T_ {
                                 /* Mask Parameter: AnalogOutput_YieldWhenWaiting
                                  * Referenced by: '<Root>/Analog Output'
                                  */
+  real_T Ramp_slope;                   /* Mask Parameter: Ramp_slope
+                                        * Referenced by: '<S2>/Step'
+                                        */
+  real_T Ramp_start;                   /* Mask Parameter: Ramp_start
+                                        * Referenced by:
+                                        *   '<S2>/Constant'
+                                        *   '<S2>/Step'
+                                        */
   int32_T AnalogInput_Channels;        /* Mask Parameter: AnalogInput_Channels
                                         * Referenced by: '<Root>/Analog Input'
                                         */
@@ -943,21 +997,22 @@ struct P_real_prop_T_ {
   int32_T AnalogOutput_VoltRange;      /* Mask Parameter: AnalogOutput_VoltRange
                                         * Referenced by: '<Root>/Analog Output'
                                         */
-  real_T Step_Time;                    /* Expression: 0
+  real_T Step_Time;                    /* Expression: 20
                                         * Referenced by: '<Root>/Step'
                                         */
   real_T Step_Y0;                      /* Expression: 0
                                         * Referenced by: '<Root>/Step'
                                         */
-  real_T Step_YFinal;                  /* Expression: 0
+  real_T Step_YFinal;                  /* Expression: -1
                                         * Referenced by: '<Root>/Step'
                                         */
-  real_T Integrator_gainval;           /* Computed Parameter: Integrator_gainval
-                                        * Referenced by: '<S33>/Integrator'
+  real_T Step_Y0_h;                    /* Expression: 0
+                                        * Referenced by: '<S2>/Step'
                                         */
-  real_T Filter_gainval;               /* Computed Parameter: Filter_gainval
-                                        * Referenced by: '<S28>/Filter'
-                                        */
+  uint8_T ManualSwitch_CurrentSetting;
+                              /* Computed Parameter: ManualSwitch_CurrentSetting
+                               * Referenced by: '<Root>/Manual Switch'
+                               */
 };
 
 /* Real-time Model Data Structure */
@@ -986,6 +1041,9 @@ struct tag_RTM_real_prop_T {
   boolean_T zCCacheNeedsReset;
   boolean_T derivCacheNeedsReset;
   boolean_T CTOutputIncnstWithState;
+  real_T odeY[2];
+  real_T odeF[4][2];
+  ODE4_IntgData intgData;
   void *dwork;
 
   /*
@@ -1035,6 +1093,9 @@ struct tag_RTM_real_prop_T {
     uint32_T clockTick0;
     uint32_T clockTickH0;
     time_T stepSize0;
+    uint32_T clockTick1;
+    uint32_T clockTickH1;
+    time_T stepSize1;
     time_T tStart;
     time_T tFinal;
     time_T timeOfLastOutput;
@@ -1048,12 +1109,12 @@ struct tag_RTM_real_prop_T {
     int_T *sampleHits;
     int_T *perTaskSampleHits;
     time_T *t;
-    time_T sampleTimesArray[1];
-    time_T offsetTimesArray[1];
-    int_T sampleTimeTaskIDArray[1];
-    int_T sampleHitArray[1];
-    int_T perTaskSampleHitsArray[1];
-    time_T tArray[1];
+    time_T sampleTimesArray[2];
+    time_T offsetTimesArray[2];
+    int_T sampleTimeTaskIDArray[2];
+    int_T sampleHitArray[2];
+    int_T perTaskSampleHitsArray[4];
+    time_T tArray[2];
   } Timing;
 };
 
@@ -1062,6 +1123,9 @@ extern P_real_prop_T real_prop_P;
 
 /* Block signals (default storage) */
 extern B_real_prop_T real_prop_B;
+
+/* Continuous states (default storage) */
+extern X_real_prop_T real_prop_X;
 
 /* Block states (default storage) */
 extern DW_real_prop_T real_prop_DW;
@@ -1103,53 +1167,54 @@ extern RT_MODEL_real_prop_T *const real_prop_M;
  *
  * '<Root>' : 'real_prop'
  * '<S1>'   : 'real_prop/PID Controller'
- * '<S2>'   : 'real_prop/PID Controller/Anti-windup'
- * '<S3>'   : 'real_prop/PID Controller/D Gain'
- * '<S4>'   : 'real_prop/PID Controller/Filter'
- * '<S5>'   : 'real_prop/PID Controller/Filter ICs'
- * '<S6>'   : 'real_prop/PID Controller/I Gain'
- * '<S7>'   : 'real_prop/PID Controller/Ideal P Gain'
- * '<S8>'   : 'real_prop/PID Controller/Ideal P Gain Fdbk'
- * '<S9>'   : 'real_prop/PID Controller/Integrator'
- * '<S10>'  : 'real_prop/PID Controller/Integrator ICs'
- * '<S11>'  : 'real_prop/PID Controller/N Copy'
- * '<S12>'  : 'real_prop/PID Controller/N Gain'
- * '<S13>'  : 'real_prop/PID Controller/P Copy'
- * '<S14>'  : 'real_prop/PID Controller/Parallel P Gain'
- * '<S15>'  : 'real_prop/PID Controller/Reset Signal'
- * '<S16>'  : 'real_prop/PID Controller/Saturation'
- * '<S17>'  : 'real_prop/PID Controller/Saturation Fdbk'
- * '<S18>'  : 'real_prop/PID Controller/Sum'
- * '<S19>'  : 'real_prop/PID Controller/Sum Fdbk'
- * '<S20>'  : 'real_prop/PID Controller/Tracking Mode'
- * '<S21>'  : 'real_prop/PID Controller/Tracking Mode Sum'
- * '<S22>'  : 'real_prop/PID Controller/Tsamp - Integral'
- * '<S23>'  : 'real_prop/PID Controller/Tsamp - Ngain'
- * '<S24>'  : 'real_prop/PID Controller/postSat Signal'
- * '<S25>'  : 'real_prop/PID Controller/preSat Signal'
- * '<S26>'  : 'real_prop/PID Controller/Anti-windup/Passthrough'
- * '<S27>'  : 'real_prop/PID Controller/D Gain/Internal Parameters'
- * '<S28>'  : 'real_prop/PID Controller/Filter/Disc. Forward Euler Filter'
- * '<S29>'  : 'real_prop/PID Controller/Filter ICs/Internal IC - Filter'
- * '<S30>'  : 'real_prop/PID Controller/I Gain/Internal Parameters'
- * '<S31>'  : 'real_prop/PID Controller/Ideal P Gain/Passthrough'
- * '<S32>'  : 'real_prop/PID Controller/Ideal P Gain Fdbk/Disabled'
- * '<S33>'  : 'real_prop/PID Controller/Integrator/Discrete'
- * '<S34>'  : 'real_prop/PID Controller/Integrator ICs/Internal IC'
- * '<S35>'  : 'real_prop/PID Controller/N Copy/Disabled'
- * '<S36>'  : 'real_prop/PID Controller/N Gain/Internal Parameters'
- * '<S37>'  : 'real_prop/PID Controller/P Copy/Disabled'
- * '<S38>'  : 'real_prop/PID Controller/Parallel P Gain/Internal Parameters'
- * '<S39>'  : 'real_prop/PID Controller/Reset Signal/Disabled'
- * '<S40>'  : 'real_prop/PID Controller/Saturation/Enabled'
- * '<S41>'  : 'real_prop/PID Controller/Saturation Fdbk/Disabled'
- * '<S42>'  : 'real_prop/PID Controller/Sum/Sum_PID'
- * '<S43>'  : 'real_prop/PID Controller/Sum Fdbk/Disabled'
- * '<S44>'  : 'real_prop/PID Controller/Tracking Mode/Disabled'
- * '<S45>'  : 'real_prop/PID Controller/Tracking Mode Sum/Passthrough'
- * '<S46>'  : 'real_prop/PID Controller/Tsamp - Integral/Passthrough'
- * '<S47>'  : 'real_prop/PID Controller/Tsamp - Ngain/Passthrough'
- * '<S48>'  : 'real_prop/PID Controller/postSat Signal/Forward_Path'
- * '<S49>'  : 'real_prop/PID Controller/preSat Signal/Forward_Path'
+ * '<S2>'   : 'real_prop/Ramp'
+ * '<S3>'   : 'real_prop/PID Controller/Anti-windup'
+ * '<S4>'   : 'real_prop/PID Controller/D Gain'
+ * '<S5>'   : 'real_prop/PID Controller/Filter'
+ * '<S6>'   : 'real_prop/PID Controller/Filter ICs'
+ * '<S7>'   : 'real_prop/PID Controller/I Gain'
+ * '<S8>'   : 'real_prop/PID Controller/Ideal P Gain'
+ * '<S9>'   : 'real_prop/PID Controller/Ideal P Gain Fdbk'
+ * '<S10>'  : 'real_prop/PID Controller/Integrator'
+ * '<S11>'  : 'real_prop/PID Controller/Integrator ICs'
+ * '<S12>'  : 'real_prop/PID Controller/N Copy'
+ * '<S13>'  : 'real_prop/PID Controller/N Gain'
+ * '<S14>'  : 'real_prop/PID Controller/P Copy'
+ * '<S15>'  : 'real_prop/PID Controller/Parallel P Gain'
+ * '<S16>'  : 'real_prop/PID Controller/Reset Signal'
+ * '<S17>'  : 'real_prop/PID Controller/Saturation'
+ * '<S18>'  : 'real_prop/PID Controller/Saturation Fdbk'
+ * '<S19>'  : 'real_prop/PID Controller/Sum'
+ * '<S20>'  : 'real_prop/PID Controller/Sum Fdbk'
+ * '<S21>'  : 'real_prop/PID Controller/Tracking Mode'
+ * '<S22>'  : 'real_prop/PID Controller/Tracking Mode Sum'
+ * '<S23>'  : 'real_prop/PID Controller/Tsamp - Integral'
+ * '<S24>'  : 'real_prop/PID Controller/Tsamp - Ngain'
+ * '<S25>'  : 'real_prop/PID Controller/postSat Signal'
+ * '<S26>'  : 'real_prop/PID Controller/preSat Signal'
+ * '<S27>'  : 'real_prop/PID Controller/Anti-windup/Passthrough'
+ * '<S28>'  : 'real_prop/PID Controller/D Gain/Internal Parameters'
+ * '<S29>'  : 'real_prop/PID Controller/Filter/Cont. Filter'
+ * '<S30>'  : 'real_prop/PID Controller/Filter ICs/Internal IC - Filter'
+ * '<S31>'  : 'real_prop/PID Controller/I Gain/Internal Parameters'
+ * '<S32>'  : 'real_prop/PID Controller/Ideal P Gain/Passthrough'
+ * '<S33>'  : 'real_prop/PID Controller/Ideal P Gain Fdbk/Disabled'
+ * '<S34>'  : 'real_prop/PID Controller/Integrator/Continuous'
+ * '<S35>'  : 'real_prop/PID Controller/Integrator ICs/Internal IC'
+ * '<S36>'  : 'real_prop/PID Controller/N Copy/Disabled'
+ * '<S37>'  : 'real_prop/PID Controller/N Gain/Internal Parameters'
+ * '<S38>'  : 'real_prop/PID Controller/P Copy/Disabled'
+ * '<S39>'  : 'real_prop/PID Controller/Parallel P Gain/Internal Parameters'
+ * '<S40>'  : 'real_prop/PID Controller/Reset Signal/Disabled'
+ * '<S41>'  : 'real_prop/PID Controller/Saturation/Enabled'
+ * '<S42>'  : 'real_prop/PID Controller/Saturation Fdbk/Disabled'
+ * '<S43>'  : 'real_prop/PID Controller/Sum/Sum_PID'
+ * '<S44>'  : 'real_prop/PID Controller/Sum Fdbk/Disabled'
+ * '<S45>'  : 'real_prop/PID Controller/Tracking Mode/Disabled'
+ * '<S46>'  : 'real_prop/PID Controller/Tracking Mode Sum/Passthrough'
+ * '<S47>'  : 'real_prop/PID Controller/Tsamp - Integral/Passthrough'
+ * '<S48>'  : 'real_prop/PID Controller/Tsamp - Ngain/Passthrough'
+ * '<S49>'  : 'real_prop/PID Controller/postSat Signal/Forward_Path'
+ * '<S50>'  : 'real_prop/PID Controller/preSat Signal/Forward_Path'
  */
 #endif                                 /* RTW_HEADER_real_prop_h_ */

@@ -6,9 +6,9 @@
  *
  * Code generation for model "real_prop".
  *
- * Model version              : 1.5
+ * Model version              : 1.9
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue Apr 18 10:43:00 2023
+ * C source code generated on : Tue May  9 12:02:39 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -22,4 +22,8 @@
 #include "rtwtypes.h"
 #include "multiword_types.h"
 #include "zero_crossing_types.h"
+
+/* private model entry point functions */
+extern void real_prop_derivatives(void);
+
 #endif                                 /* RTW_HEADER_real_prop_private_h_ */
