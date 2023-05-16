@@ -6,9 +6,9 @@
  *
  * Code generation for model "real_pi_pos_mesure".
  *
- * Model version              : 1.8
+ * Model version              : 1.10
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue May  9 12:12:38 2023
+ * C source code generated on : Tue May 16 10:50:29 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -852,13 +852,13 @@
 /* Block signals (default storage) */
 typedef struct {
   real_T Step;                         /* '<Root>/Step' */
-  real_T X;                            /* '<Root>/Analog Input1' */
+  real_T u;                            /* '<Root>/Manual Switch' */
+  real_T AnalogInput1;                 /* '<Root>/Analog Input1' */
   real_T angle;                        /* '<Root>/Analog Input' */
-  real_T FilterCoefficient;            /* '<S85>/Filter Coefficient' */
-  real_T FilterCoefficient_o;          /* '<S37>/Filter Coefficient' */
-  real_T Saturation;                   /* '<S41>/Saturation' */
-  real_T IntegralGain;                 /* '<S31>/Integral Gain' */
-  real_T IntegralGain_l;               /* '<S79>/Integral Gain' */
+  real_T Sum1;                         /* '<Root>/Sum1' */
+  real_T FilterCoefficient;            /* '<S41>/Filter Coefficient' */
+  real_T Saturation;                   /* '<S45>/Saturation' */
+  real_T IntegralGain;                 /* '<S35>/Integral Gain' */
 } B_real_pi_pos_mesure_T;
 
 /* Block states (default storage) for system '<Root>' */
@@ -867,7 +867,7 @@ typedef struct {
   void *AnalogInput_PWORK;             /* '<Root>/Analog Input' */
   void *AnalogOutput_PWORK;            /* '<Root>/Analog Output' */
   struct {
-    void *LoggedData[2];
+    void *LoggedData[3];
   } Scope1_PWORK;                      /* '<Root>/Scope1' */
 
   struct {
@@ -888,26 +888,23 @@ typedef struct {
 
 /* Continuous states (default storage) */
 typedef struct {
-  real_T Integrator_CSTATE;            /* '<S82>/Integrator' */
-  real_T Filter_CSTATE;                /* '<S77>/Filter' */
-  real_T Integrator_CSTATE_f;          /* '<S34>/Integrator' */
-  real_T Filter_CSTATE_m;              /* '<S29>/Filter' */
+  real_T Internal_CSTATE;              /* '<S1>/Internal' */
+  real_T Integrator_CSTATE;            /* '<S38>/Integrator' */
+  real_T Filter_CSTATE;                /* '<S33>/Filter' */
 } X_real_pi_pos_mesure_T;
 
 /* State derivatives (default storage) */
 typedef struct {
-  real_T Integrator_CSTATE;            /* '<S82>/Integrator' */
-  real_T Filter_CSTATE;                /* '<S77>/Filter' */
-  real_T Integrator_CSTATE_f;          /* '<S34>/Integrator' */
-  real_T Filter_CSTATE_m;              /* '<S29>/Filter' */
+  real_T Internal_CSTATE;              /* '<S1>/Internal' */
+  real_T Integrator_CSTATE;            /* '<S38>/Integrator' */
+  real_T Filter_CSTATE;                /* '<S33>/Filter' */
 } XDot_real_pi_pos_mesure_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator_CSTATE;         /* '<S82>/Integrator' */
-  boolean_T Filter_CSTATE;             /* '<S77>/Filter' */
-  boolean_T Integrator_CSTATE_f;       /* '<S34>/Integrator' */
-  boolean_T Filter_CSTATE_m;           /* '<S29>/Filter' */
+  boolean_T Internal_CSTATE;           /* '<S1>/Internal' */
+  boolean_T Integrator_CSTATE;         /* '<S38>/Integrator' */
+  boolean_T Filter_CSTATE;             /* '<S33>/Filter' */
 } XDis_real_pi_pos_mesure_T;
 
 #ifndef ODE4_INTG
@@ -938,49 +935,34 @@ typedef struct {
 /* Parameters (default storage) */
 struct P_real_pi_pos_mesure_T_ {
   real_T Ki;                           /* Variable: Ki
-                                        * Referenced by: '<S31>/Integral Gain'
+                                        * Referenced by: '<S35>/Integral Gain'
                                         */
   real_T Kp;                           /* Variable: Kp
-                                        * Referenced by: '<S39>/Proportional Gain'
-                                        */
-  real_T PIDController1_D;             /* Mask Parameter: PIDController1_D
-                                        * Referenced by: '<S76>/Derivative Gain'
+                                        * Referenced by: '<S43>/Proportional Gain'
                                         */
   real_T PIDController_D;              /* Mask Parameter: PIDController_D
-                                        * Referenced by: '<S28>/Derivative Gain'
+                                        * Referenced by: '<S32>/Derivative Gain'
                                         */
   real_T AnalogOutput_FinalValue;     /* Mask Parameter: AnalogOutput_FinalValue
                                        * Referenced by: '<Root>/Analog Output'
                                        */
-  real_T PIDController1_I;             /* Mask Parameter: PIDController1_I
-                                        * Referenced by: '<S79>/Integral Gain'
-                                        */
-  real_T PIDController1_InitialConditionForFilter;
-                     /* Mask Parameter: PIDController1_InitialConditionForFilter
-                      * Referenced by: '<S77>/Filter'
-                      */
   real_T PIDController_InitialConditionForFilter;
                       /* Mask Parameter: PIDController_InitialConditionForFilter
-                       * Referenced by: '<S29>/Filter'
+                       * Referenced by: '<S33>/Filter'
                        */
-  real_T PIDController1_InitialConditionForIntegrator;
-                 /* Mask Parameter: PIDController1_InitialConditionForIntegrator
-                  * Referenced by: '<S82>/Integrator'
-                  */
   real_T PIDController_InitialConditionForIntegrator;
                   /* Mask Parameter: PIDController_InitialConditionForIntegrator
-                   * Referenced by: '<S34>/Integrator'
+                   * Referenced by: '<S38>/Integrator'
                    */
+  real_T Ramp_InitialOutput;           /* Mask Parameter: Ramp_InitialOutput
+                                        * Referenced by: '<S3>/Constant1'
+                                        */
   real_T AnalogOutput_InitialValue; /* Mask Parameter: AnalogOutput_InitialValue
                                      * Referenced by: '<Root>/Analog Output'
                                      */
-  real_T PIDController1_LowerSaturationLimit;
-                          /* Mask Parameter: PIDController1_LowerSaturationLimit
-                           * Referenced by: '<S89>/Saturation'
-                           */
   real_T PIDController_LowerSaturationLimit;
                            /* Mask Parameter: PIDController_LowerSaturationLimit
-                            * Referenced by: '<S41>/Saturation'
+                            * Referenced by: '<S45>/Saturation'
                             */
   real_T AnalogInput1_MaxMissedTicks;
                                   /* Mask Parameter: AnalogInput1_MaxMissedTicks
@@ -994,22 +976,12 @@ struct P_real_pi_pos_mesure_T_ {
                                   /* Mask Parameter: AnalogOutput_MaxMissedTicks
                                    * Referenced by: '<Root>/Analog Output'
                                    */
-  real_T PIDController1_N;             /* Mask Parameter: PIDController1_N
-                                        * Referenced by: '<S85>/Filter Coefficient'
-                                        */
   real_T PIDController_N;              /* Mask Parameter: PIDController_N
-                                        * Referenced by: '<S37>/Filter Coefficient'
+                                        * Referenced by: '<S41>/Filter Coefficient'
                                         */
-  real_T PIDController1_P;             /* Mask Parameter: PIDController1_P
-                                        * Referenced by: '<S87>/Proportional Gain'
-                                        */
-  real_T PIDController1_UpperSaturationLimit;
-                          /* Mask Parameter: PIDController1_UpperSaturationLimit
-                           * Referenced by: '<S89>/Saturation'
-                           */
   real_T PIDController_UpperSaturationLimit;
                            /* Mask Parameter: PIDController_UpperSaturationLimit
-                            * Referenced by: '<S41>/Saturation'
+                            * Referenced by: '<S45>/Saturation'
                             */
   real_T AnalogInput1_YieldWhenWaiting;
                                 /* Mask Parameter: AnalogInput1_YieldWhenWaiting
@@ -1023,6 +995,14 @@ struct P_real_pi_pos_mesure_T_ {
                                 /* Mask Parameter: AnalogOutput_YieldWhenWaiting
                                  * Referenced by: '<Root>/Analog Output'
                                  */
+  real_T Ramp_slope;                   /* Mask Parameter: Ramp_slope
+                                        * Referenced by: '<S3>/Step'
+                                        */
+  real_T Ramp_start;                   /* Mask Parameter: Ramp_start
+                                        * Referenced by:
+                                        *   '<S3>/Constant'
+                                        *   '<S3>/Step'
+                                        */
   int32_T AnalogInput1_Channels;       /* Mask Parameter: AnalogInput1_Channels
                                         * Referenced by: '<Root>/Analog Input1'
                                         */
@@ -1059,6 +1039,34 @@ struct P_real_pi_pos_mesure_T_ {
   real_T Step_YFinal;                  /* Expression: 0
                                         * Referenced by: '<Root>/Step'
                                         */
+  real_T Step_Y0_a;                    /* Expression: 0
+                                        * Referenced by: '<S3>/Step'
+                                        */
+  real_T Internal_A;                   /* Computed Parameter: Internal_A
+                                        * Referenced by: '<S1>/Internal'
+                                        */
+  real_T Internal_B;                   /* Computed Parameter: Internal_B
+                                        * Referenced by: '<S1>/Internal'
+                                        */
+  real_T Internal_C;                   /* Computed Parameter: Internal_C
+                                        * Referenced by: '<S1>/Internal'
+                                        */
+  real_T Internal_D;                   /* Computed Parameter: Internal_D
+                                        * Referenced by: '<S1>/Internal'
+                                        */
+  real_T Internal_InitialCondition;    /* Expression: 0.0
+                                        * Referenced by: '<S1>/Internal'
+                                        */
+  real_T Saturation_UpperSat;          /* Expression: 9.5
+                                        * Referenced by: '<Root>/Saturation'
+                                        */
+  real_T Saturation_LowerSat;          /* Expression: -9
+                                        * Referenced by: '<Root>/Saturation'
+                                        */
+  uint8_T ManualSwitch_CurrentSetting;
+                              /* Computed Parameter: ManualSwitch_CurrentSetting
+                               * Referenced by: '<Root>/Manual Switch'
+                               */
 };
 
 /* Real-time Model Data Structure */
@@ -1087,8 +1095,8 @@ struct tag_RTM_real_pi_pos_mesure_T {
   boolean_T zCCacheNeedsReset;
   boolean_T derivCacheNeedsReset;
   boolean_T CTOutputIncnstWithState;
-  real_T odeY[4];
-  real_T odeF[4][4];
+  real_T odeY[3];
+  real_T odeF[4][3];
   ODE4_IntgData intgData;
   void *dwork;
 
@@ -1212,103 +1220,59 @@ extern RT_MODEL_real_pi_pos_mesure_T *const real_pi_pos_mesure_M;
  * Here is the system hierarchy for this model
  *
  * '<Root>' : 'real_pi_pos_mesure'
- * '<S1>'   : 'real_pi_pos_mesure/PID Controller'
- * '<S2>'   : 'real_pi_pos_mesure/PID Controller1'
- * '<S3>'   : 'real_pi_pos_mesure/PID Controller/Anti-windup'
- * '<S4>'   : 'real_pi_pos_mesure/PID Controller/D Gain'
- * '<S5>'   : 'real_pi_pos_mesure/PID Controller/Filter'
- * '<S6>'   : 'real_pi_pos_mesure/PID Controller/Filter ICs'
- * '<S7>'   : 'real_pi_pos_mesure/PID Controller/I Gain'
- * '<S8>'   : 'real_pi_pos_mesure/PID Controller/Ideal P Gain'
- * '<S9>'   : 'real_pi_pos_mesure/PID Controller/Ideal P Gain Fdbk'
- * '<S10>'  : 'real_pi_pos_mesure/PID Controller/Integrator'
- * '<S11>'  : 'real_pi_pos_mesure/PID Controller/Integrator ICs'
- * '<S12>'  : 'real_pi_pos_mesure/PID Controller/N Copy'
- * '<S13>'  : 'real_pi_pos_mesure/PID Controller/N Gain'
- * '<S14>'  : 'real_pi_pos_mesure/PID Controller/P Copy'
- * '<S15>'  : 'real_pi_pos_mesure/PID Controller/Parallel P Gain'
- * '<S16>'  : 'real_pi_pos_mesure/PID Controller/Reset Signal'
- * '<S17>'  : 'real_pi_pos_mesure/PID Controller/Saturation'
- * '<S18>'  : 'real_pi_pos_mesure/PID Controller/Saturation Fdbk'
- * '<S19>'  : 'real_pi_pos_mesure/PID Controller/Sum'
- * '<S20>'  : 'real_pi_pos_mesure/PID Controller/Sum Fdbk'
- * '<S21>'  : 'real_pi_pos_mesure/PID Controller/Tracking Mode'
- * '<S22>'  : 'real_pi_pos_mesure/PID Controller/Tracking Mode Sum'
- * '<S23>'  : 'real_pi_pos_mesure/PID Controller/Tsamp - Integral'
- * '<S24>'  : 'real_pi_pos_mesure/PID Controller/Tsamp - Ngain'
- * '<S25>'  : 'real_pi_pos_mesure/PID Controller/postSat Signal'
- * '<S26>'  : 'real_pi_pos_mesure/PID Controller/preSat Signal'
- * '<S27>'  : 'real_pi_pos_mesure/PID Controller/Anti-windup/Passthrough'
- * '<S28>'  : 'real_pi_pos_mesure/PID Controller/D Gain/Internal Parameters'
- * '<S29>'  : 'real_pi_pos_mesure/PID Controller/Filter/Cont. Filter'
- * '<S30>'  : 'real_pi_pos_mesure/PID Controller/Filter ICs/Internal IC - Filter'
- * '<S31>'  : 'real_pi_pos_mesure/PID Controller/I Gain/Internal Parameters'
- * '<S32>'  : 'real_pi_pos_mesure/PID Controller/Ideal P Gain/Passthrough'
- * '<S33>'  : 'real_pi_pos_mesure/PID Controller/Ideal P Gain Fdbk/Disabled'
- * '<S34>'  : 'real_pi_pos_mesure/PID Controller/Integrator/Continuous'
- * '<S35>'  : 'real_pi_pos_mesure/PID Controller/Integrator ICs/Internal IC'
- * '<S36>'  : 'real_pi_pos_mesure/PID Controller/N Copy/Disabled'
- * '<S37>'  : 'real_pi_pos_mesure/PID Controller/N Gain/Internal Parameters'
- * '<S38>'  : 'real_pi_pos_mesure/PID Controller/P Copy/Disabled'
- * '<S39>'  : 'real_pi_pos_mesure/PID Controller/Parallel P Gain/Internal Parameters'
- * '<S40>'  : 'real_pi_pos_mesure/PID Controller/Reset Signal/Disabled'
- * '<S41>'  : 'real_pi_pos_mesure/PID Controller/Saturation/Enabled'
- * '<S42>'  : 'real_pi_pos_mesure/PID Controller/Saturation Fdbk/Disabled'
- * '<S43>'  : 'real_pi_pos_mesure/PID Controller/Sum/Sum_PID'
- * '<S44>'  : 'real_pi_pos_mesure/PID Controller/Sum Fdbk/Disabled'
- * '<S45>'  : 'real_pi_pos_mesure/PID Controller/Tracking Mode/Disabled'
- * '<S46>'  : 'real_pi_pos_mesure/PID Controller/Tracking Mode Sum/Passthrough'
- * '<S47>'  : 'real_pi_pos_mesure/PID Controller/Tsamp - Integral/Passthrough'
- * '<S48>'  : 'real_pi_pos_mesure/PID Controller/Tsamp - Ngain/Passthrough'
- * '<S49>'  : 'real_pi_pos_mesure/PID Controller/postSat Signal/Forward_Path'
- * '<S50>'  : 'real_pi_pos_mesure/PID Controller/preSat Signal/Forward_Path'
- * '<S51>'  : 'real_pi_pos_mesure/PID Controller1/Anti-windup'
- * '<S52>'  : 'real_pi_pos_mesure/PID Controller1/D Gain'
- * '<S53>'  : 'real_pi_pos_mesure/PID Controller1/Filter'
- * '<S54>'  : 'real_pi_pos_mesure/PID Controller1/Filter ICs'
- * '<S55>'  : 'real_pi_pos_mesure/PID Controller1/I Gain'
- * '<S56>'  : 'real_pi_pos_mesure/PID Controller1/Ideal P Gain'
- * '<S57>'  : 'real_pi_pos_mesure/PID Controller1/Ideal P Gain Fdbk'
- * '<S58>'  : 'real_pi_pos_mesure/PID Controller1/Integrator'
- * '<S59>'  : 'real_pi_pos_mesure/PID Controller1/Integrator ICs'
- * '<S60>'  : 'real_pi_pos_mesure/PID Controller1/N Copy'
- * '<S61>'  : 'real_pi_pos_mesure/PID Controller1/N Gain'
- * '<S62>'  : 'real_pi_pos_mesure/PID Controller1/P Copy'
- * '<S63>'  : 'real_pi_pos_mesure/PID Controller1/Parallel P Gain'
- * '<S64>'  : 'real_pi_pos_mesure/PID Controller1/Reset Signal'
- * '<S65>'  : 'real_pi_pos_mesure/PID Controller1/Saturation'
- * '<S66>'  : 'real_pi_pos_mesure/PID Controller1/Saturation Fdbk'
- * '<S67>'  : 'real_pi_pos_mesure/PID Controller1/Sum'
- * '<S68>'  : 'real_pi_pos_mesure/PID Controller1/Sum Fdbk'
- * '<S69>'  : 'real_pi_pos_mesure/PID Controller1/Tracking Mode'
- * '<S70>'  : 'real_pi_pos_mesure/PID Controller1/Tracking Mode Sum'
- * '<S71>'  : 'real_pi_pos_mesure/PID Controller1/Tsamp - Integral'
- * '<S72>'  : 'real_pi_pos_mesure/PID Controller1/Tsamp - Ngain'
- * '<S73>'  : 'real_pi_pos_mesure/PID Controller1/postSat Signal'
- * '<S74>'  : 'real_pi_pos_mesure/PID Controller1/preSat Signal'
- * '<S75>'  : 'real_pi_pos_mesure/PID Controller1/Anti-windup/Passthrough'
- * '<S76>'  : 'real_pi_pos_mesure/PID Controller1/D Gain/Internal Parameters'
- * '<S77>'  : 'real_pi_pos_mesure/PID Controller1/Filter/Cont. Filter'
- * '<S78>'  : 'real_pi_pos_mesure/PID Controller1/Filter ICs/Internal IC - Filter'
- * '<S79>'  : 'real_pi_pos_mesure/PID Controller1/I Gain/Internal Parameters'
- * '<S80>'  : 'real_pi_pos_mesure/PID Controller1/Ideal P Gain/Passthrough'
- * '<S81>'  : 'real_pi_pos_mesure/PID Controller1/Ideal P Gain Fdbk/Disabled'
- * '<S82>'  : 'real_pi_pos_mesure/PID Controller1/Integrator/Continuous'
- * '<S83>'  : 'real_pi_pos_mesure/PID Controller1/Integrator ICs/Internal IC'
- * '<S84>'  : 'real_pi_pos_mesure/PID Controller1/N Copy/Disabled'
- * '<S85>'  : 'real_pi_pos_mesure/PID Controller1/N Gain/Internal Parameters'
- * '<S86>'  : 'real_pi_pos_mesure/PID Controller1/P Copy/Disabled'
- * '<S87>'  : 'real_pi_pos_mesure/PID Controller1/Parallel P Gain/Internal Parameters'
- * '<S88>'  : 'real_pi_pos_mesure/PID Controller1/Reset Signal/Disabled'
- * '<S89>'  : 'real_pi_pos_mesure/PID Controller1/Saturation/Enabled'
- * '<S90>'  : 'real_pi_pos_mesure/PID Controller1/Saturation Fdbk/Disabled'
- * '<S91>'  : 'real_pi_pos_mesure/PID Controller1/Sum/Sum_PID'
- * '<S92>'  : 'real_pi_pos_mesure/PID Controller1/Sum Fdbk/Disabled'
- * '<S93>'  : 'real_pi_pos_mesure/PID Controller1/Tracking Mode/Disabled'
- * '<S94>'  : 'real_pi_pos_mesure/PID Controller1/Tracking Mode Sum/Passthrough'
- * '<S95>'  : 'real_pi_pos_mesure/PID Controller1/Tsamp - Integral/Passthrough'
- * '<S96>'  : 'real_pi_pos_mesure/PID Controller1/Tsamp - Ngain/Passthrough'
- * '<S97>'  : 'real_pi_pos_mesure/PID Controller1/postSat Signal/Forward_Path'
- * '<S98>'  : 'real_pi_pos_mesure/PID Controller1/preSat Signal/Forward_Path'
+ * '<S1>'   : 'real_pi_pos_mesure/LTI System1'
+ * '<S2>'   : 'real_pi_pos_mesure/PID Controller'
+ * '<S3>'   : 'real_pi_pos_mesure/Ramp'
+ * '<S4>'   : 'real_pi_pos_mesure/LTI System1/IO Delay'
+ * '<S5>'   : 'real_pi_pos_mesure/LTI System1/Input Delay'
+ * '<S6>'   : 'real_pi_pos_mesure/LTI System1/Output Delay'
+ * '<S7>'   : 'real_pi_pos_mesure/PID Controller/Anti-windup'
+ * '<S8>'   : 'real_pi_pos_mesure/PID Controller/D Gain'
+ * '<S9>'   : 'real_pi_pos_mesure/PID Controller/Filter'
+ * '<S10>'  : 'real_pi_pos_mesure/PID Controller/Filter ICs'
+ * '<S11>'  : 'real_pi_pos_mesure/PID Controller/I Gain'
+ * '<S12>'  : 'real_pi_pos_mesure/PID Controller/Ideal P Gain'
+ * '<S13>'  : 'real_pi_pos_mesure/PID Controller/Ideal P Gain Fdbk'
+ * '<S14>'  : 'real_pi_pos_mesure/PID Controller/Integrator'
+ * '<S15>'  : 'real_pi_pos_mesure/PID Controller/Integrator ICs'
+ * '<S16>'  : 'real_pi_pos_mesure/PID Controller/N Copy'
+ * '<S17>'  : 'real_pi_pos_mesure/PID Controller/N Gain'
+ * '<S18>'  : 'real_pi_pos_mesure/PID Controller/P Copy'
+ * '<S19>'  : 'real_pi_pos_mesure/PID Controller/Parallel P Gain'
+ * '<S20>'  : 'real_pi_pos_mesure/PID Controller/Reset Signal'
+ * '<S21>'  : 'real_pi_pos_mesure/PID Controller/Saturation'
+ * '<S22>'  : 'real_pi_pos_mesure/PID Controller/Saturation Fdbk'
+ * '<S23>'  : 'real_pi_pos_mesure/PID Controller/Sum'
+ * '<S24>'  : 'real_pi_pos_mesure/PID Controller/Sum Fdbk'
+ * '<S25>'  : 'real_pi_pos_mesure/PID Controller/Tracking Mode'
+ * '<S26>'  : 'real_pi_pos_mesure/PID Controller/Tracking Mode Sum'
+ * '<S27>'  : 'real_pi_pos_mesure/PID Controller/Tsamp - Integral'
+ * '<S28>'  : 'real_pi_pos_mesure/PID Controller/Tsamp - Ngain'
+ * '<S29>'  : 'real_pi_pos_mesure/PID Controller/postSat Signal'
+ * '<S30>'  : 'real_pi_pos_mesure/PID Controller/preSat Signal'
+ * '<S31>'  : 'real_pi_pos_mesure/PID Controller/Anti-windup/Passthrough'
+ * '<S32>'  : 'real_pi_pos_mesure/PID Controller/D Gain/Internal Parameters'
+ * '<S33>'  : 'real_pi_pos_mesure/PID Controller/Filter/Cont. Filter'
+ * '<S34>'  : 'real_pi_pos_mesure/PID Controller/Filter ICs/Internal IC - Filter'
+ * '<S35>'  : 'real_pi_pos_mesure/PID Controller/I Gain/Internal Parameters'
+ * '<S36>'  : 'real_pi_pos_mesure/PID Controller/Ideal P Gain/Passthrough'
+ * '<S37>'  : 'real_pi_pos_mesure/PID Controller/Ideal P Gain Fdbk/Disabled'
+ * '<S38>'  : 'real_pi_pos_mesure/PID Controller/Integrator/Continuous'
+ * '<S39>'  : 'real_pi_pos_mesure/PID Controller/Integrator ICs/Internal IC'
+ * '<S40>'  : 'real_pi_pos_mesure/PID Controller/N Copy/Disabled'
+ * '<S41>'  : 'real_pi_pos_mesure/PID Controller/N Gain/Internal Parameters'
+ * '<S42>'  : 'real_pi_pos_mesure/PID Controller/P Copy/Disabled'
+ * '<S43>'  : 'real_pi_pos_mesure/PID Controller/Parallel P Gain/Internal Parameters'
+ * '<S44>'  : 'real_pi_pos_mesure/PID Controller/Reset Signal/Disabled'
+ * '<S45>'  : 'real_pi_pos_mesure/PID Controller/Saturation/Enabled'
+ * '<S46>'  : 'real_pi_pos_mesure/PID Controller/Saturation Fdbk/Disabled'
+ * '<S47>'  : 'real_pi_pos_mesure/PID Controller/Sum/Sum_PID'
+ * '<S48>'  : 'real_pi_pos_mesure/PID Controller/Sum Fdbk/Disabled'
+ * '<S49>'  : 'real_pi_pos_mesure/PID Controller/Tracking Mode/Disabled'
+ * '<S50>'  : 'real_pi_pos_mesure/PID Controller/Tracking Mode Sum/Passthrough'
+ * '<S51>'  : 'real_pi_pos_mesure/PID Controller/Tsamp - Integral/Passthrough'
+ * '<S52>'  : 'real_pi_pos_mesure/PID Controller/Tsamp - Ngain/Passthrough'
+ * '<S53>'  : 'real_pi_pos_mesure/PID Controller/postSat Signal/Forward_Path'
+ * '<S54>'  : 'real_pi_pos_mesure/PID Controller/preSat Signal/Forward_Path'
  */
 #endif                                 /* RTW_HEADER_real_pi_pos_mesure_h_ */

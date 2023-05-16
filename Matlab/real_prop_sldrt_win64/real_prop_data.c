@@ -6,9 +6,9 @@
  *
  * Code generation for model "real_prop".
  *
- * Model version              : 1.9
+ * Model version              : 1.10
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue May  9 12:02:39 2023
+ * C source code generated on : Tue May 16 09:56:38 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -139,20 +139,20 @@ P_real_prop_T real_prop_P = {
    */
   0,
 
-  /* Expression: 20
+  /* Expression: 10
    * Referenced by: '<Root>/Step'
    */
-  20.0,
+  10.0,
 
   /* Expression: 0
    * Referenced by: '<Root>/Step'
    */
   0.0,
 
-  /* Expression: -1
+  /* Expression: 10
    * Referenced by: '<Root>/Step'
    */
-  -1.0,
+  10.0,
 
   /* Expression: 0
    * Referenced by: '<S2>/Step'

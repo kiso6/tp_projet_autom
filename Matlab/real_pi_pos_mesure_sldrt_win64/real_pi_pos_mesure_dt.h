@@ -6,9 +6,9 @@
  *
  * Code generation for model "real_pi_pos_mesure".
  *
- * Model version              : 1.8
+ * Model version              : 1.10
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue May  9 12:12:38 2023
+ * C source code generated on : Tue May 16 10:50:29 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -60,7 +60,7 @@ static DataTypeTransition rtBTransitions[] = {
   { (char_T *)(&real_pi_pos_mesure_B.Step), 0, 0, 8 }
   ,
 
-  { (char_T *)(&real_pi_pos_mesure_DW.AnalogInput1_PWORK), 11, 0, 8 }
+  { (char_T *)(&real_pi_pos_mesure_DW.AnalogInput1_PWORK), 11, 0, 9 }
 };
 
 /* data type transition table for block I/O structure */
@@ -71,16 +71,18 @@ static DataTypeTransitionTable rtBTransTable = {
 
 /* data type transitions for Parameters structure */
 static DataTypeTransition rtPTransitions[] = {
-  { (char_T *)(&real_pi_pos_mesure_P.Ki), 0, 0, 24 },
+  { (char_T *)(&real_pi_pos_mesure_P.Ki), 0, 0, 19 },
 
   { (char_T *)(&real_pi_pos_mesure_P.AnalogInput1_Channels), 6, 0, 9 },
 
-  { (char_T *)(&real_pi_pos_mesure_P.Step_Time), 0, 0, 3 }
+  { (char_T *)(&real_pi_pos_mesure_P.Step_Time), 0, 0, 11 },
+
+  { (char_T *)(&real_pi_pos_mesure_P.ManualSwitch_CurrentSetting), 3, 0, 1 }
 };
 
 /* data type transition table for Parameters structure */
 static DataTypeTransitionTable rtPTransTable = {
-  3U,
+  4U,
   rtPTransitions
 };
 

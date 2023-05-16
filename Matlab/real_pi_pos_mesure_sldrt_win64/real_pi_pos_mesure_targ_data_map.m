@@ -5,7 +5,7 @@
   ;%***********************
       
     nTotData      = 0; %add to this count as we go
-    nTotSects     = 3;
+    nTotSects     = 4;
     sectIdxOffset = 0;
     
     ;%
@@ -28,8 +28,8 @@
     ;%
     ;% Auto data (real_pi_pos_mesure_P)
     ;%
-      section.nData     = 24;
-      section.data(24)  = dumData; %prealloc
+      section.nData     = 19;
+      section.data(19)  = dumData; %prealloc
       
 	  ;% real_pi_pos_mesure_P.Ki
 	  section.data(1).logicalSrcIdx = 0;
@@ -39,93 +39,73 @@
 	  section.data(2).logicalSrcIdx = 1;
 	  section.data(2).dtTransOffset = 1;
 	
-	  ;% real_pi_pos_mesure_P.PIDController1_D
+	  ;% real_pi_pos_mesure_P.PIDController_D
 	  section.data(3).logicalSrcIdx = 2;
 	  section.data(3).dtTransOffset = 2;
 	
-	  ;% real_pi_pos_mesure_P.PIDController_D
+	  ;% real_pi_pos_mesure_P.AnalogOutput_FinalValue
 	  section.data(4).logicalSrcIdx = 3;
 	  section.data(4).dtTransOffset = 3;
 	
-	  ;% real_pi_pos_mesure_P.AnalogOutput_FinalValue
+	  ;% real_pi_pos_mesure_P.PIDController_InitialConditionForFilter
 	  section.data(5).logicalSrcIdx = 4;
 	  section.data(5).dtTransOffset = 4;
 	
-	  ;% real_pi_pos_mesure_P.PIDController1_I
+	  ;% real_pi_pos_mesure_P.PIDController_InitialConditionForIntegrator
 	  section.data(6).logicalSrcIdx = 5;
 	  section.data(6).dtTransOffset = 5;
 	
-	  ;% real_pi_pos_mesure_P.PIDController1_InitialConditionForFilter
+	  ;% real_pi_pos_mesure_P.Ramp_InitialOutput
 	  section.data(7).logicalSrcIdx = 6;
 	  section.data(7).dtTransOffset = 6;
 	
-	  ;% real_pi_pos_mesure_P.PIDController_InitialConditionForFilter
+	  ;% real_pi_pos_mesure_P.AnalogOutput_InitialValue
 	  section.data(8).logicalSrcIdx = 7;
 	  section.data(8).dtTransOffset = 7;
 	
-	  ;% real_pi_pos_mesure_P.PIDController1_InitialConditionForIntegrator
+	  ;% real_pi_pos_mesure_P.PIDController_LowerSaturationLimit
 	  section.data(9).logicalSrcIdx = 8;
 	  section.data(9).dtTransOffset = 8;
 	
-	  ;% real_pi_pos_mesure_P.PIDController_InitialConditionForIntegrator
+	  ;% real_pi_pos_mesure_P.AnalogInput1_MaxMissedTicks
 	  section.data(10).logicalSrcIdx = 9;
 	  section.data(10).dtTransOffset = 9;
 	
-	  ;% real_pi_pos_mesure_P.AnalogOutput_InitialValue
+	  ;% real_pi_pos_mesure_P.AnalogInput_MaxMissedTicks
 	  section.data(11).logicalSrcIdx = 10;
 	  section.data(11).dtTransOffset = 10;
 	
-	  ;% real_pi_pos_mesure_P.PIDController1_LowerSaturationLimit
+	  ;% real_pi_pos_mesure_P.AnalogOutput_MaxMissedTicks
 	  section.data(12).logicalSrcIdx = 11;
 	  section.data(12).dtTransOffset = 11;
 	
-	  ;% real_pi_pos_mesure_P.PIDController_LowerSaturationLimit
+	  ;% real_pi_pos_mesure_P.PIDController_N
 	  section.data(13).logicalSrcIdx = 12;
 	  section.data(13).dtTransOffset = 12;
 	
-	  ;% real_pi_pos_mesure_P.AnalogInput1_MaxMissedTicks
+	  ;% real_pi_pos_mesure_P.PIDController_UpperSaturationLimit
 	  section.data(14).logicalSrcIdx = 13;
 	  section.data(14).dtTransOffset = 13;
 	
-	  ;% real_pi_pos_mesure_P.AnalogInput_MaxMissedTicks
+	  ;% real_pi_pos_mesure_P.AnalogInput1_YieldWhenWaiting
 	  section.data(15).logicalSrcIdx = 14;
 	  section.data(15).dtTransOffset = 14;
 	
-	  ;% real_pi_pos_mesure_P.AnalogOutput_MaxMissedTicks
+	  ;% real_pi_pos_mesure_P.AnalogInput_YieldWhenWaiting
 	  section.data(16).logicalSrcIdx = 15;
 	  section.data(16).dtTransOffset = 15;
 	
-	  ;% real_pi_pos_mesure_P.PIDController1_N
+	  ;% real_pi_pos_mesure_P.AnalogOutput_YieldWhenWaiting
 	  section.data(17).logicalSrcIdx = 16;
 	  section.data(17).dtTransOffset = 16;
 	
-	  ;% real_pi_pos_mesure_P.PIDController_N
+	  ;% real_pi_pos_mesure_P.Ramp_slope
 	  section.data(18).logicalSrcIdx = 17;
 	  section.data(18).dtTransOffset = 17;
 	
-	  ;% real_pi_pos_mesure_P.PIDController1_P
+	  ;% real_pi_pos_mesure_P.Ramp_start
 	  section.data(19).logicalSrcIdx = 18;
 	  section.data(19).dtTransOffset = 18;
-	
-	  ;% real_pi_pos_mesure_P.PIDController1_UpperSaturationLimit
-	  section.data(20).logicalSrcIdx = 19;
-	  section.data(20).dtTransOffset = 19;
-	
-	  ;% real_pi_pos_mesure_P.PIDController_UpperSaturationLimit
-	  section.data(21).logicalSrcIdx = 20;
-	  section.data(21).dtTransOffset = 20;
-	
-	  ;% real_pi_pos_mesure_P.AnalogInput1_YieldWhenWaiting
-	  section.data(22).logicalSrcIdx = 21;
-	  section.data(22).dtTransOffset = 21;
-	
-	  ;% real_pi_pos_mesure_P.AnalogInput_YieldWhenWaiting
-	  section.data(23).logicalSrcIdx = 22;
-	  section.data(23).dtTransOffset = 22;
-	
-	  ;% real_pi_pos_mesure_P.AnalogOutput_YieldWhenWaiting
-	  section.data(24).logicalSrcIdx = 23;
-	  section.data(24).dtTransOffset = 23;
 	
       nTotData = nTotData + section.nData;
       paramMap.sections(1) = section;
@@ -135,62 +115,105 @@
       section.data(9)  = dumData; %prealloc
       
 	  ;% real_pi_pos_mesure_P.AnalogInput1_Channels
-	  section.data(1).logicalSrcIdx = 24;
+	  section.data(1).logicalSrcIdx = 19;
 	  section.data(1).dtTransOffset = 0;
 	
 	  ;% real_pi_pos_mesure_P.AnalogInput_Channels
-	  section.data(2).logicalSrcIdx = 25;
+	  section.data(2).logicalSrcIdx = 20;
 	  section.data(2).dtTransOffset = 1;
 	
 	  ;% real_pi_pos_mesure_P.AnalogOutput_Channels
-	  section.data(3).logicalSrcIdx = 26;
+	  section.data(3).logicalSrcIdx = 21;
 	  section.data(3).dtTransOffset = 2;
 	
 	  ;% real_pi_pos_mesure_P.AnalogInput1_RangeMode
-	  section.data(4).logicalSrcIdx = 27;
+	  section.data(4).logicalSrcIdx = 22;
 	  section.data(4).dtTransOffset = 3;
 	
 	  ;% real_pi_pos_mesure_P.AnalogInput_RangeMode
-	  section.data(5).logicalSrcIdx = 28;
+	  section.data(5).logicalSrcIdx = 23;
 	  section.data(5).dtTransOffset = 4;
 	
 	  ;% real_pi_pos_mesure_P.AnalogOutput_RangeMode
-	  section.data(6).logicalSrcIdx = 29;
+	  section.data(6).logicalSrcIdx = 24;
 	  section.data(6).dtTransOffset = 5;
 	
 	  ;% real_pi_pos_mesure_P.AnalogInput1_VoltRange
-	  section.data(7).logicalSrcIdx = 30;
+	  section.data(7).logicalSrcIdx = 25;
 	  section.data(7).dtTransOffset = 6;
 	
 	  ;% real_pi_pos_mesure_P.AnalogInput_VoltRange
-	  section.data(8).logicalSrcIdx = 31;
+	  section.data(8).logicalSrcIdx = 26;
 	  section.data(8).dtTransOffset = 7;
 	
 	  ;% real_pi_pos_mesure_P.AnalogOutput_VoltRange
-	  section.data(9).logicalSrcIdx = 32;
+	  section.data(9).logicalSrcIdx = 27;
 	  section.data(9).dtTransOffset = 8;
 	
       nTotData = nTotData + section.nData;
       paramMap.sections(2) = section;
       clear section
       
-      section.nData     = 3;
-      section.data(3)  = dumData; %prealloc
+      section.nData     = 11;
+      section.data(11)  = dumData; %prealloc
       
 	  ;% real_pi_pos_mesure_P.Step_Time
-	  section.data(1).logicalSrcIdx = 33;
+	  section.data(1).logicalSrcIdx = 28;
 	  section.data(1).dtTransOffset = 0;
 	
 	  ;% real_pi_pos_mesure_P.Step_Y0
-	  section.data(2).logicalSrcIdx = 34;
+	  section.data(2).logicalSrcIdx = 29;
 	  section.data(2).dtTransOffset = 1;
 	
 	  ;% real_pi_pos_mesure_P.Step_YFinal
-	  section.data(3).logicalSrcIdx = 35;
+	  section.data(3).logicalSrcIdx = 30;
 	  section.data(3).dtTransOffset = 2;
+	
+	  ;% real_pi_pos_mesure_P.Step_Y0_a
+	  section.data(4).logicalSrcIdx = 31;
+	  section.data(4).dtTransOffset = 3;
+	
+	  ;% real_pi_pos_mesure_P.Internal_A
+	  section.data(5).logicalSrcIdx = 32;
+	  section.data(5).dtTransOffset = 4;
+	
+	  ;% real_pi_pos_mesure_P.Internal_B
+	  section.data(6).logicalSrcIdx = 33;
+	  section.data(6).dtTransOffset = 5;
+	
+	  ;% real_pi_pos_mesure_P.Internal_C
+	  section.data(7).logicalSrcIdx = 34;
+	  section.data(7).dtTransOffset = 6;
+	
+	  ;% real_pi_pos_mesure_P.Internal_D
+	  section.data(8).logicalSrcIdx = 35;
+	  section.data(8).dtTransOffset = 7;
+	
+	  ;% real_pi_pos_mesure_P.Internal_InitialCondition
+	  section.data(9).logicalSrcIdx = 36;
+	  section.data(9).dtTransOffset = 8;
+	
+	  ;% real_pi_pos_mesure_P.Saturation_UpperSat
+	  section.data(10).logicalSrcIdx = 37;
+	  section.data(10).dtTransOffset = 9;
+	
+	  ;% real_pi_pos_mesure_P.Saturation_LowerSat
+	  section.data(11).logicalSrcIdx = 38;
+	  section.data(11).dtTransOffset = 10;
 	
       nTotData = nTotData + section.nData;
       paramMap.sections(3) = section;
+      clear section
+      
+      section.nData     = 1;
+      section.data(1)  = dumData; %prealloc
+      
+	  ;% real_pi_pos_mesure_P.ManualSwitch_CurrentSetting
+	  section.data(1).logicalSrcIdx = 39;
+	  section.data(1).dtTransOffset = 0;
+	
+      nTotData = nTotData + section.nData;
+      paramMap.sections(4) = section;
       clear section
       
     
@@ -241,31 +264,31 @@
 	  section.data(1).logicalSrcIdx = 0;
 	  section.data(1).dtTransOffset = 0;
 	
-	  ;% real_pi_pos_mesure_B.X
+	  ;% real_pi_pos_mesure_B.u
 	  section.data(2).logicalSrcIdx = 1;
 	  section.data(2).dtTransOffset = 1;
 	
-	  ;% real_pi_pos_mesure_B.angle
+	  ;% real_pi_pos_mesure_B.AnalogInput1
 	  section.data(3).logicalSrcIdx = 2;
 	  section.data(3).dtTransOffset = 2;
 	
-	  ;% real_pi_pos_mesure_B.FilterCoefficient
+	  ;% real_pi_pos_mesure_B.angle
 	  section.data(4).logicalSrcIdx = 3;
 	  section.data(4).dtTransOffset = 3;
 	
-	  ;% real_pi_pos_mesure_B.FilterCoefficient_o
+	  ;% real_pi_pos_mesure_B.Sum1
 	  section.data(5).logicalSrcIdx = 4;
 	  section.data(5).dtTransOffset = 4;
 	
-	  ;% real_pi_pos_mesure_B.Saturation
+	  ;% real_pi_pos_mesure_B.FilterCoefficient
 	  section.data(6).logicalSrcIdx = 5;
 	  section.data(6).dtTransOffset = 5;
 	
-	  ;% real_pi_pos_mesure_B.IntegralGain
+	  ;% real_pi_pos_mesure_B.Saturation
 	  section.data(7).logicalSrcIdx = 6;
 	  section.data(7).dtTransOffset = 6;
 	
-	  ;% real_pi_pos_mesure_B.IntegralGain_l
+	  ;% real_pi_pos_mesure_B.IntegralGain
 	  section.data(8).logicalSrcIdx = 7;
 	  section.data(8).dtTransOffset = 7;
 	
@@ -335,15 +358,15 @@
 	
 	  ;% real_pi_pos_mesure_DW.TAQSigLogging_InsertedFor_AnalogInput1_at_outport_0_PWORK.AQHandles
 	  section.data(5).logicalSrcIdx = 4;
-	  section.data(5).dtTransOffset = 5;
+	  section.data(5).dtTransOffset = 6;
 	
 	  ;% real_pi_pos_mesure_DW.TAQSigLogging_InsertedFor_AnalogInput_at_outport_0_PWORK.AQHandles
 	  section.data(6).logicalSrcIdx = 5;
-	  section.data(6).dtTransOffset = 6;
+	  section.data(6).dtTransOffset = 7;
 	
 	  ;% real_pi_pos_mesure_DW.TAQSigLogging_InsertedFor_Step_at_outport_0_PWORK.AQHandles
 	  section.data(7).logicalSrcIdx = 6;
-	  section.data(7).dtTransOffset = 7;
+	  section.data(7).dtTransOffset = 8;
 	
       nTotData = nTotData + section.nData;
       dworkMap.sections(1) = section;
@@ -375,8 +398,8 @@
   ;%
 
 
-  targMap.checksum0 = 1334786790;
-  targMap.checksum1 = 3197024134;
-  targMap.checksum2 = 3428372974;
-  targMap.checksum3 = 1228302057;
+  targMap.checksum0 = 2541438594;
+  targMap.checksum1 = 297319138;
+  targMap.checksum2 = 350244539;
+  targMap.checksum3 = 1291657465;
 

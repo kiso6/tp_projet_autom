@@ -31,6 +31,39 @@ FTBF = feedback(Pi*G, 1);
 step(FTBF)
 
 
-%% Identification position
-K_pos = 0.907
+%% Identification position et commande de la position
+K_pos = 0.907; 
+TF=tf([K_pos],[1 0 0]);
 
+%Avance de phase
+alpha = 2;
+tau = 1;
+K = 1;
+C_pos = K*tf([tau*alpha 1], [tau 1])
+
+%%Correction dans l'espace d'états
+
+%Modele
+A=[0 1;
+   0 0];
+
+B=K_pos*[0;
+    1];
+
+C=[1 0];
+
+disp("ESPACE D'ETAT")
+sys=ss(A,B,C,0)
+
+%Correction par commande pile
+Q=[1 0
+   0 1];
+R=1;
+KK=lqr(A,B,Q,R);
+
+
+
+
+
+
+disp("fin script");

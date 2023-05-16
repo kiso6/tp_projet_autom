@@ -6,9 +6,9 @@
  *
  * Code generation for model "real_pi_pos_mesure".
  *
- * Model version              : 1.8
+ * Model version              : 1.10
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue May  9 12:12:38 2023
+ * C source code generated on : Tue May 16 10:50:29 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -75,7 +75,7 @@ static void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
   real_T *f3 = id->f[3];
   real_T temp;
   int_T i;
-  int_T nXc = 4;
+  int_T nXc = 3;
   rtsiSetSimTimeStep(si,MINOR_TIME_STEP);
 
   /* Save the state values at time t in y, we'll use x as ynew. */
@@ -131,7 +131,6 @@ static void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
 void real_pi_pos_mesure_output(void)
 {
   real_T rtb_epsilon;
-  real_T rtb_epsilon_b;
   real_T u0;
   if (rtmIsMajorTimeStep(real_pi_pos_mesure_M)) {
     /* set solver stop time */
@@ -154,14 +153,43 @@ void real_pi_pos_mesure_output(void)
       (&real_pi_pos_mesure_M->solverInfo);
   }
 
-  /* Step: '<Root>/Step' */
-  if (real_pi_pos_mesure_M->Timing.t[0] < real_pi_pos_mesure_P.Step_Time) {
-    real_pi_pos_mesure_B.Step = real_pi_pos_mesure_P.Step_Y0;
-  } else {
-    real_pi_pos_mesure_B.Step = real_pi_pos_mesure_P.Step_YFinal;
+  if (rtmIsMajorTimeStep(real_pi_pos_mesure_M)) {
+    /* Step: '<Root>/Step' */
+    if (real_pi_pos_mesure_M->Timing.t[1] < real_pi_pos_mesure_P.Step_Time) {
+      real_pi_pos_mesure_B.Step = real_pi_pos_mesure_P.Step_Y0;
+    } else {
+      real_pi_pos_mesure_B.Step = real_pi_pos_mesure_P.Step_YFinal;
+    }
+
+    /* End of Step: '<Root>/Step' */
   }
 
-  /* End of Step: '<Root>/Step' */
+  /* ManualSwitch: '<Root>/Manual Switch' incorporates:
+   *  Clock: '<S3>/Clock'
+   *  Constant: '<S3>/Constant'
+   *  Constant: '<S3>/Constant1'
+   *  Product: '<S3>/Product'
+   *  Step: '<S3>/Step'
+   *  Sum: '<S3>/Output'
+   *  Sum: '<S3>/Sum'
+   */
+  if (real_pi_pos_mesure_P.ManualSwitch_CurrentSetting == 1) {
+    real_pi_pos_mesure_B.u = real_pi_pos_mesure_B.Step;
+  } else {
+    if (real_pi_pos_mesure_M->Timing.t[0] < real_pi_pos_mesure_P.Ramp_start) {
+      /* Step: '<S3>/Step' */
+      rtb_epsilon = real_pi_pos_mesure_P.Step_Y0_a;
+    } else {
+      /* Step: '<S3>/Step' */
+      rtb_epsilon = real_pi_pos_mesure_P.Ramp_slope;
+    }
+
+    real_pi_pos_mesure_B.u = (real_pi_pos_mesure_M->Timing.t[0] -
+      real_pi_pos_mesure_P.Ramp_start) * rtb_epsilon +
+      real_pi_pos_mesure_P.Ramp_InitialOutput;
+  }
+
+  /* End of ManualSwitch: '<Root>/Manual Switch' */
   if (rtmIsMajorTimeStep(real_pi_pos_mesure_M)) {
     /* S-Function (sldrtai): '<Root>/Analog Input1' */
     /* S-Function Block: <Root>/Analog Input1 */
@@ -171,7 +199,7 @@ void real_pi_pos_mesure_output(void)
       parm.rangeidx = real_pi_pos_mesure_P.AnalogInput1_VoltRange;
       RTBIO_DriverIO(0, ANALOGINPUT, IOREAD, 1,
                      &real_pi_pos_mesure_P.AnalogInput1_Channels,
-                     &real_pi_pos_mesure_B.X, &parm);
+                     &real_pi_pos_mesure_B.AnalogInput1, &parm);
     }
 
     /* S-Function (sldrtai): '<Root>/Analog Input' */
@@ -187,58 +215,46 @@ void real_pi_pos_mesure_output(void)
   }
 
   /* Sum: '<Root>/Sum1' */
-  rtb_epsilon = real_pi_pos_mesure_B.Step - real_pi_pos_mesure_B.X;
+  real_pi_pos_mesure_B.Sum1 = real_pi_pos_mesure_B.u -
+    real_pi_pos_mesure_B.AnalogInput1;
 
-  /* Gain: '<S85>/Filter Coefficient' incorporates:
-   *  Gain: '<S76>/Derivative Gain'
-   *  Integrator: '<S77>/Filter'
-   *  Sum: '<S77>/SumD'
-   */
-  real_pi_pos_mesure_B.FilterCoefficient =
-    (real_pi_pos_mesure_P.PIDController1_D * rtb_epsilon -
-     real_pi_pos_mesure_X.Filter_CSTATE) * real_pi_pos_mesure_P.PIDController1_N;
+  /* StateSpace: '<S1>/Internal' */
+  rtb_epsilon = real_pi_pos_mesure_P.Internal_C *
+    real_pi_pos_mesure_X.Internal_CSTATE + real_pi_pos_mesure_P.Internal_D *
+    real_pi_pos_mesure_B.Sum1;
 
-  /* Sum: '<S91>/Sum' incorporates:
-   *  Gain: '<S87>/Proportional Gain'
-   *  Integrator: '<S82>/Integrator'
-   */
-  u0 = (real_pi_pos_mesure_P.PIDController1_P * rtb_epsilon +
-        real_pi_pos_mesure_X.Integrator_CSTATE) +
-    real_pi_pos_mesure_B.FilterCoefficient;
-
-  /* Saturate: '<S89>/Saturation' */
-  if (u0 > real_pi_pos_mesure_P.PIDController1_UpperSaturationLimit) {
-    u0 = real_pi_pos_mesure_P.PIDController1_UpperSaturationLimit;
+  /* Saturate: '<Root>/Saturation' */
+  if (rtb_epsilon > real_pi_pos_mesure_P.Saturation_UpperSat) {
+    rtb_epsilon = real_pi_pos_mesure_P.Saturation_UpperSat;
   } else {
-    if (u0 < real_pi_pos_mesure_P.PIDController1_LowerSaturationLimit) {
-      u0 = real_pi_pos_mesure_P.PIDController1_LowerSaturationLimit;
+    if (rtb_epsilon < real_pi_pos_mesure_P.Saturation_LowerSat) {
+      rtb_epsilon = real_pi_pos_mesure_P.Saturation_LowerSat;
     }
   }
 
-  /* End of Saturate: '<S89>/Saturation' */
+  /* End of Saturate: '<Root>/Saturation' */
 
   /* Sum: '<Root>/Sum' */
-  rtb_epsilon_b = u0 - real_pi_pos_mesure_B.angle;
+  rtb_epsilon -= real_pi_pos_mesure_B.angle;
 
-  /* Gain: '<S37>/Filter Coefficient' incorporates:
-   *  Gain: '<S28>/Derivative Gain'
-   *  Integrator: '<S29>/Filter'
-   *  Sum: '<S29>/SumD'
+  /* Gain: '<S41>/Filter Coefficient' incorporates:
+   *  Gain: '<S32>/Derivative Gain'
+   *  Integrator: '<S33>/Filter'
+   *  Sum: '<S33>/SumD'
    */
-  real_pi_pos_mesure_B.FilterCoefficient_o =
-    (real_pi_pos_mesure_P.PIDController_D * rtb_epsilon_b -
-     real_pi_pos_mesure_X.Filter_CSTATE_m) *
+  real_pi_pos_mesure_B.FilterCoefficient = (real_pi_pos_mesure_P.PIDController_D
+    * rtb_epsilon - real_pi_pos_mesure_X.Filter_CSTATE) *
     real_pi_pos_mesure_P.PIDController_N;
 
-  /* Sum: '<S43>/Sum' incorporates:
-   *  Gain: '<S39>/Proportional Gain'
-   *  Integrator: '<S34>/Integrator'
+  /* Sum: '<S47>/Sum' incorporates:
+   *  Gain: '<S43>/Proportional Gain'
+   *  Integrator: '<S38>/Integrator'
    */
-  u0 = (real_pi_pos_mesure_P.Kp * rtb_epsilon_b +
-        real_pi_pos_mesure_X.Integrator_CSTATE_f) +
-    real_pi_pos_mesure_B.FilterCoefficient_o;
+  u0 = (real_pi_pos_mesure_P.Kp * rtb_epsilon +
+        real_pi_pos_mesure_X.Integrator_CSTATE) +
+    real_pi_pos_mesure_B.FilterCoefficient;
 
-  /* Saturate: '<S41>/Saturation' */
+  /* Saturate: '<S45>/Saturation' */
   if (u0 > real_pi_pos_mesure_P.PIDController_UpperSaturationLimit) {
     real_pi_pos_mesure_B.Saturation =
       real_pi_pos_mesure_P.PIDController_UpperSaturationLimit;
@@ -249,7 +265,7 @@ void real_pi_pos_mesure_output(void)
     real_pi_pos_mesure_B.Saturation = u0;
   }
 
-  /* End of Saturate: '<S41>/Saturation' */
+  /* End of Saturate: '<S45>/Saturation' */
   if (rtmIsMajorTimeStep(real_pi_pos_mesure_M)) {
     /* S-Function (sldrtao): '<Root>/Analog Output' */
     /* S-Function Block: <Root>/Analog Output */
@@ -268,9 +284,9 @@ void real_pi_pos_mesure_output(void)
     if (rtmIsMajorTimeStep(real_pi_pos_mesure_M)) {
       {
         double time = real_pi_pos_mesure_M->Timing.t[1];
-        void *pData = (void *)&real_pi_pos_mesure_B.X;
+        void *pData = (void *)&real_pi_pos_mesure_B.AnalogInput1;
         int32_T size = 1*sizeof(real_T);
-        sendToAsyncQueueTgtAppSvc(2777157519U, time, pData, size);
+        sendToAsyncQueueTgtAppSvc(4019367317U, time, pData, size);
       }
     }
 
@@ -280,7 +296,7 @@ void real_pi_pos_mesure_output(void)
         double time = real_pi_pos_mesure_M->Timing.t[1];
         void *pData = (void *)&real_pi_pos_mesure_B.angle;
         int32_T size = 1*sizeof(real_T);
-        sendToAsyncQueueTgtAppSvc(1987760706U, time, pData, size);
+        sendToAsyncQueueTgtAppSvc(3103237278U, time, pData, size);
       }
     }
 
@@ -290,16 +306,13 @@ void real_pi_pos_mesure_output(void)
         double time = real_pi_pos_mesure_M->Timing.t[1];
         void *pData = (void *)&real_pi_pos_mesure_B.Step;
         int32_T size = 1*sizeof(real_T);
-        sendToAsyncQueueTgtAppSvc(2054295870U, time, pData, size);
+        sendToAsyncQueueTgtAppSvc(776527521U, time, pData, size);
       }
     }
   }
 
-  /* Gain: '<S31>/Integral Gain' */
-  real_pi_pos_mesure_B.IntegralGain = real_pi_pos_mesure_P.Ki * rtb_epsilon_b;
-
-  /* Gain: '<S79>/Integral Gain' */
-  real_pi_pos_mesure_B.IntegralGain_l = real_pi_pos_mesure_P.PIDController1_I *
+  /* Gain: '<S35>/Integral Gain' */
+  real_pi_pos_mesure_B.IntegralGain = real_pi_pos_mesure_P.Ki * 2.0 *
     rtb_epsilon;
 }
 
@@ -353,17 +366,18 @@ void real_pi_pos_mesure_derivatives(void)
   XDot_real_pi_pos_mesure_T *_rtXdot;
   _rtXdot = ((XDot_real_pi_pos_mesure_T *) real_pi_pos_mesure_M->derivs);
 
-  /* Derivatives for Integrator: '<S82>/Integrator' */
-  _rtXdot->Integrator_CSTATE = real_pi_pos_mesure_B.IntegralGain_l;
+  /* Derivatives for StateSpace: '<S1>/Internal' */
+  _rtXdot->Internal_CSTATE = 0.0;
+  _rtXdot->Internal_CSTATE += real_pi_pos_mesure_P.Internal_A *
+    real_pi_pos_mesure_X.Internal_CSTATE;
+  _rtXdot->Internal_CSTATE += real_pi_pos_mesure_P.Internal_B *
+    real_pi_pos_mesure_B.Sum1;
 
-  /* Derivatives for Integrator: '<S77>/Filter' */
+  /* Derivatives for Integrator: '<S38>/Integrator' */
+  _rtXdot->Integrator_CSTATE = real_pi_pos_mesure_B.IntegralGain;
+
+  /* Derivatives for Integrator: '<S33>/Filter' */
   _rtXdot->Filter_CSTATE = real_pi_pos_mesure_B.FilterCoefficient;
-
-  /* Derivatives for Integrator: '<S34>/Integrator' */
-  _rtXdot->Integrator_CSTATE_f = real_pi_pos_mesure_B.IntegralGain;
-
-  /* Derivatives for Integrator: '<S29>/Filter' */
-  _rtXdot->Filter_CSTATE_m = real_pi_pos_mesure_B.FilterCoefficient_o;
 }
 
 /* Model initialize function */
@@ -383,20 +397,16 @@ void real_pi_pos_mesure_initialize(void)
     }
   }
 
-  /* InitializeConditions for Integrator: '<S82>/Integrator' */
+  /* InitializeConditions for StateSpace: '<S1>/Internal' */
+  real_pi_pos_mesure_X.Internal_CSTATE =
+    real_pi_pos_mesure_P.Internal_InitialCondition;
+
+  /* InitializeConditions for Integrator: '<S38>/Integrator' */
   real_pi_pos_mesure_X.Integrator_CSTATE =
-    real_pi_pos_mesure_P.PIDController1_InitialConditionForIntegrator;
-
-  /* InitializeConditions for Integrator: '<S77>/Filter' */
-  real_pi_pos_mesure_X.Filter_CSTATE =
-    real_pi_pos_mesure_P.PIDController1_InitialConditionForFilter;
-
-  /* InitializeConditions for Integrator: '<S34>/Integrator' */
-  real_pi_pos_mesure_X.Integrator_CSTATE_f =
     real_pi_pos_mesure_P.PIDController_InitialConditionForIntegrator;
 
-  /* InitializeConditions for Integrator: '<S29>/Filter' */
-  real_pi_pos_mesure_X.Filter_CSTATE_m =
+  /* InitializeConditions for Integrator: '<S33>/Filter' */
+  real_pi_pos_mesure_X.Filter_CSTATE =
     real_pi_pos_mesure_P.PIDController_InitialConditionForFilter;
 }
 
@@ -561,18 +571,19 @@ RT_MODEL_real_pi_pos_mesure_T *real_pi_pos_mesure(void)
   real_pi_pos_mesure_M->Timing.stepSize1 = 0.005;
 
   /* External mode info */
-  real_pi_pos_mesure_M->Sizes.checksums[0] = (1334786790U);
-  real_pi_pos_mesure_M->Sizes.checksums[1] = (3197024134U);
-  real_pi_pos_mesure_M->Sizes.checksums[2] = (3428372974U);
-  real_pi_pos_mesure_M->Sizes.checksums[3] = (1228302057U);
+  real_pi_pos_mesure_M->Sizes.checksums[0] = (2541438594U);
+  real_pi_pos_mesure_M->Sizes.checksums[1] = (297319138U);
+  real_pi_pos_mesure_M->Sizes.checksums[2] = (350244539U);
+  real_pi_pos_mesure_M->Sizes.checksums[3] = (1291657465U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
     static RTWExtModeInfo rt_ExtModeInfo;
-    static const sysRanDType *systemRan[1];
+    static const sysRanDType *systemRan[2];
     real_pi_pos_mesure_M->extModeInfo = (&rt_ExtModeInfo);
     rteiSetSubSystemActiveVectorAddresses(&rt_ExtModeInfo, systemRan);
     systemRan[0] = &rtAlwaysEnabled;
+    systemRan[1] = &rtAlwaysEnabled;
     rteiSetModelMappingInfoPtr(real_pi_pos_mesure_M->extModeInfo,
       &real_pi_pos_mesure_M->SpecialInfo.mappingInfo);
     rteiSetChecksumsPtr(real_pi_pos_mesure_M->extModeInfo,
@@ -625,16 +636,16 @@ RT_MODEL_real_pi_pos_mesure_T *real_pi_pos_mesure(void)
   }
 
   /* Initialize Sizes */
-  real_pi_pos_mesure_M->Sizes.numContStates = (4);/* Number of continuous states */
+  real_pi_pos_mesure_M->Sizes.numContStates = (3);/* Number of continuous states */
   real_pi_pos_mesure_M->Sizes.numPeriodicContStates = (0);
                                       /* Number of periodic continuous states */
   real_pi_pos_mesure_M->Sizes.numY = (0);/* Number of model outputs */
   real_pi_pos_mesure_M->Sizes.numU = (0);/* Number of model inputs */
   real_pi_pos_mesure_M->Sizes.sysDirFeedThru = (0);/* The model is not direct feedthrough */
   real_pi_pos_mesure_M->Sizes.numSampTimes = (2);/* Number of sample times */
-  real_pi_pos_mesure_M->Sizes.numBlocks = (28);/* Number of blocks */
+  real_pi_pos_mesure_M->Sizes.numBlocks = (30);/* Number of blocks */
   real_pi_pos_mesure_M->Sizes.numBlockIO = (8);/* Number of block outputs */
-  real_pi_pos_mesure_M->Sizes.numBlockPrms = (36);/* Sum of parameter "widths" */
+  real_pi_pos_mesure_M->Sizes.numBlockPrms = (40);/* Sum of parameter "widths" */
   return real_pi_pos_mesure_M;
 }
 

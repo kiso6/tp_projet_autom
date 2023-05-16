@@ -6,9 +6,9 @@
  *
  * Code generation for model "real_pi_pos_mesure".
  *
- * Model version              : 1.8
+ * Model version              : 1.10
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue May  9 12:12:38 2023
+ * C source code generated on : Tue May 16 10:50:29 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -23,22 +23,17 @@
 /* Block parameters (default storage) */
 P_real_pi_pos_mesure_T real_pi_pos_mesure_P = {
   /* Variable: Ki
-   * Referenced by: '<S31>/Integral Gain'
+   * Referenced by: '<S35>/Integral Gain'
    */
   0.91078,
 
   /* Variable: Kp
-   * Referenced by: '<S39>/Proportional Gain'
+   * Referenced by: '<S43>/Proportional Gain'
    */
   5.282524,
 
-  /* Mask Parameter: PIDController1_D
-   * Referenced by: '<S76>/Derivative Gain'
-   */
-  1.0,
-
   /* Mask Parameter: PIDController_D
-   * Referenced by: '<S28>/Derivative Gain'
+   * Referenced by: '<S32>/Derivative Gain'
    */
   0.0,
 
@@ -47,43 +42,28 @@ P_real_pi_pos_mesure_T real_pi_pos_mesure_P = {
    */
   0.0,
 
-  /* Mask Parameter: PIDController1_I
-   * Referenced by: '<S79>/Integral Gain'
-   */
-  3.0,
-
-  /* Mask Parameter: PIDController1_InitialConditionForFilter
-   * Referenced by: '<S77>/Filter'
-   */
-  0.0,
-
   /* Mask Parameter: PIDController_InitialConditionForFilter
-   * Referenced by: '<S29>/Filter'
+   * Referenced by: '<S33>/Filter'
    */
   0.0,
-
-  /* Mask Parameter: PIDController1_InitialConditionForIntegrator
-   * Referenced by: '<S82>/Integrator'
-   */
-  10.0,
 
   /* Mask Parameter: PIDController_InitialConditionForIntegrator
-   * Referenced by: '<S34>/Integrator'
+   * Referenced by: '<S38>/Integrator'
    */
   10.0,
+
+  /* Mask Parameter: Ramp_InitialOutput
+   * Referenced by: '<S3>/Constant1'
+   */
+  -5.0,
 
   /* Mask Parameter: AnalogOutput_InitialValue
    * Referenced by: '<Root>/Analog Output'
    */
   0.0,
 
-  /* Mask Parameter: PIDController1_LowerSaturationLimit
-   * Referenced by: '<S89>/Saturation'
-   */
-  -10.0,
-
   /* Mask Parameter: PIDController_LowerSaturationLimit
-   * Referenced by: '<S41>/Saturation'
+   * Referenced by: '<S45>/Saturation'
    */
   -10.0,
 
@@ -102,28 +82,13 @@ P_real_pi_pos_mesure_T real_pi_pos_mesure_P = {
    */
   10.0,
 
-  /* Mask Parameter: PIDController1_N
-   * Referenced by: '<S85>/Filter Coefficient'
-   */
-  100.0,
-
   /* Mask Parameter: PIDController_N
-   * Referenced by: '<S37>/Filter Coefficient'
+   * Referenced by: '<S41>/Filter Coefficient'
    */
   100.0,
-
-  /* Mask Parameter: PIDController1_P
-   * Referenced by: '<S87>/Proportional Gain'
-   */
-  20.0,
-
-  /* Mask Parameter: PIDController1_UpperSaturationLimit
-   * Referenced by: '<S89>/Saturation'
-   */
-  10.0,
 
   /* Mask Parameter: PIDController_UpperSaturationLimit
-   * Referenced by: '<S41>/Saturation'
+   * Referenced by: '<S45>/Saturation'
    */
   10.0,
 
@@ -141,6 +106,18 @@ P_real_pi_pos_mesure_T real_pi_pos_mesure_P = {
    * Referenced by: '<Root>/Analog Output'
    */
   0.0,
+
+  /* Mask Parameter: Ramp_slope
+   * Referenced by: '<S3>/Step'
+   */
+  0.5,
+
+  /* Mask Parameter: Ramp_start
+   * Referenced by:
+   *   '<S3>/Constant'
+   *   '<S3>/Step'
+   */
+  20.0,
 
   /* Mask Parameter: AnalogInput1_Channels
    * Referenced by: '<Root>/Analog Input1'
@@ -200,5 +177,50 @@ P_real_pi_pos_mesure_T real_pi_pos_mesure_P = {
   /* Expression: 0
    * Referenced by: '<Root>/Step'
    */
-  0.0
+  0.0,
+
+  /* Expression: 0
+   * Referenced by: '<S3>/Step'
+   */
+  0.0,
+
+  /* Computed Parameter: Internal_A
+   * Referenced by: '<S1>/Internal'
+   */
+  -1.0,
+
+  /* Computed Parameter: Internal_B
+   * Referenced by: '<S1>/Internal'
+   */
+  1.5010699547903525,
+
+  /* Computed Parameter: Internal_C
+   * Referenced by: '<S1>/Internal'
+   */
+  -1.4500692974315139,
+
+  /* Computed Parameter: Internal_D
+   * Referenced by: '<S1>/Internal'
+   */
+  3.8640951883792476,
+
+  /* Expression: 0.0
+   * Referenced by: '<S1>/Internal'
+   */
+  0.0,
+
+  /* Expression: 9.5
+   * Referenced by: '<Root>/Saturation'
+   */
+  9.5,
+
+  /* Expression: -9
+   * Referenced by: '<Root>/Saturation'
+   */
+  -9.0,
+
+  /* Computed Parameter: ManualSwitch_CurrentSetting
+   * Referenced by: '<Root>/Manual Switch'
+   */
+  1U
 };

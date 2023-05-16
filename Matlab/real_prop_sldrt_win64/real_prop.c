@@ -6,9 +6,9 @@
  *
  * Code generation for model "real_prop".
  *
- * Model version              : 1.9
+ * Model version              : 1.10
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue May  9 12:02:39 2023
+ * C source code generated on : Tue May 16 09:56:38 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -246,7 +246,7 @@ void real_prop_output(void)
         double time = real_prop_M->Timing.t[1];
         void *pData = (void *)&real_prop_B.y;
         int32_T size = 1*sizeof(real_T);
-        sendToAsyncQueueTgtAppSvc(751993506U, time, pData, size);
+        sendToAsyncQueueTgtAppSvc(2759215639U, time, pData, size);
       }
     }
   }

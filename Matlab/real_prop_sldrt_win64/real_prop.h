@@ -6,9 +6,9 @@
  *
  * Code generation for model "real_prop".
  *
- * Model version              : 1.9
+ * Model version              : 1.10
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue May  9 12:02:39 2023
+ * C source code generated on : Tue May 16 09:56:38 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -997,13 +997,13 @@ struct P_real_prop_T_ {
   int32_T AnalogOutput_VoltRange;      /* Mask Parameter: AnalogOutput_VoltRange
                                         * Referenced by: '<Root>/Analog Output'
                                         */
-  real_T Step_Time;                    /* Expression: 20
+  real_T Step_Time;                    /* Expression: 10
                                         * Referenced by: '<Root>/Step'
                                         */
   real_T Step_Y0;                      /* Expression: 0
                                         * Referenced by: '<Root>/Step'
                                         */
-  real_T Step_YFinal;                  /* Expression: -1
+  real_T Step_YFinal;                  /* Expression: 10
                                         * Referenced by: '<Root>/Step'
                                         */
   real_T Step_Y0_h;                    /* Expression: 0
