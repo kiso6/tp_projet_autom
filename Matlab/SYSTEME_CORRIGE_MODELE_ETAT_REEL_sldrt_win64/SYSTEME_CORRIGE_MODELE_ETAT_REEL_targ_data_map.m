@@ -146,8 +146,8 @@
       paramMap.sections(2) = section;
       clear section
       
-      section.nData     = 5;
-      section.data(5)  = dumData; %prealloc
+      section.nData     = 7;
+      section.data(7)  = dumData; %prealloc
       
 	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Step_Time
 	  section.data(1).logicalSrcIdx = 26;
@@ -161,13 +161,21 @@
 	  section.data(3).logicalSrcIdx = 28;
 	  section.data(3).dtTransOffset = 2;
 	
-	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Saturation_UpperSat
+	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Constant_Value
 	  section.data(4).logicalSrcIdx = 29;
 	  section.data(4).dtTransOffset = 3;
 	
-	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Saturation_LowerSat
+	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Integrator_IC
 	  section.data(5).logicalSrcIdx = 30;
 	  section.data(5).dtTransOffset = 4;
+	
+	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Saturation_UpperSat
+	  section.data(6).logicalSrcIdx = 31;
+	  section.data(6).dtTransOffset = 5;
+	
+	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Saturation_LowerSat
+	  section.data(7).logicalSrcIdx = 32;
+	  section.data(7).dtTransOffset = 6;
 	
       nTotData = nTotData + section.nData;
       paramMap.sections(3) = section;
@@ -214,40 +222,36 @@
     ;%
     ;% Auto data (SYSTEME_CORRIGE_MODELE_ETAT_REEL_B)
     ;%
-      section.nData     = 8;
-      section.data(8)  = dumData; %prealloc
+      section.nData     = 7;
+      section.data(7)  = dumData; %prealloc
       
 	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.u
 	  section.data(1).logicalSrcIdx = 0;
 	  section.data(1).dtTransOffset = 0;
 	
-	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.AnalogInput1
+	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.VectorConcatenate1
 	  section.data(2).logicalSrcIdx = 1;
 	  section.data(2).dtTransOffset = 1;
 	
-	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.angle
+	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.AnalogInput1
 	  section.data(3).logicalSrcIdx = 2;
-	  section.data(3).dtTransOffset = 2;
+	  section.data(3).dtTransOffset = 3;
 	
-	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.ProportionalGain
+	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.angle
 	  section.data(4).logicalSrcIdx = 3;
-	  section.data(4).dtTransOffset = 3;
-	
-	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.DerivativeGain
-	  section.data(5).logicalSrcIdx = 4;
-	  section.data(5).dtTransOffset = 4;
+	  section.data(4).dtTransOffset = 4;
 	
 	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.FilterCoefficient
-	  section.data(6).logicalSrcIdx = 5;
-	  section.data(6).dtTransOffset = 5;
+	  section.data(5).logicalSrcIdx = 4;
+	  section.data(5).dtTransOffset = 5;
 	
 	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.Saturation
-	  section.data(7).logicalSrcIdx = 6;
-	  section.data(7).dtTransOffset = 6;
+	  section.data(6).logicalSrcIdx = 5;
+	  section.data(6).dtTransOffset = 6;
 	
 	  ;% SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.IntegralGain
-	  section.data(8).logicalSrcIdx = 7;
-	  section.data(8).dtTransOffset = 7;
+	  section.data(7).logicalSrcIdx = 6;
+	  section.data(7).dtTransOffset = 7;
 	
       nTotData = nTotData + section.nData;
       sigMap.sections(1) = section;
@@ -355,8 +359,8 @@
   ;%
 
 
-  targMap.checksum0 = 1159194831;
-  targMap.checksum1 = 4022816912;
-  targMap.checksum2 = 4031038767;
-  targMap.checksum3 = 192826109;
+  targMap.checksum0 = 2201733251;
+  targMap.checksum1 = 2322587122;
+  targMap.checksum2 = 3546351219;
+  targMap.checksum3 = 3752985062;
 

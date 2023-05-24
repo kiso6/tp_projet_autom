@@ -6,9 +6,9 @@
  *
  * Code generation for model "SYSTEME_CORRIGE_MODELE_ETAT_REEL".
  *
- * Model version              : 1.12
+ * Model version              : 1.13
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue May 23 12:09:43 2023
+ * C source code generated on : Wed May 24 12:32:48 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -75,7 +75,7 @@ static void rt_ertODEUpdateContinuousStates(RTWSolverInfo *si )
   real_T *f3 = id->f[3];
   real_T temp;
   int_T i;
-  int_T nXc = 2;
+  int_T nXc = 3;
   rtsiSetSimTimeStep(si,MINOR_TIME_STEP);
 
   /* Save the state values at time t in y, we'll use x as ynew. */
@@ -167,6 +167,14 @@ void SYSTEME_CORRIGE_MODELE_ETAT_REEL_output(void)
 
     /* End of Step: '<Root>/Step' */
 
+    /* SignalConversion generated from: '<Root>/Vector Concatenate1' */
+    SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.VectorConcatenate1[0] =
+      SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.u;
+
+    /* Constant: '<Root>/Constant' */
+    SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.VectorConcatenate1[1] =
+      SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Constant_Value;
+
     /* S-Function (sldrtai): '<Root>/Analog Input1' */
     /* S-Function Block: <Root>/Analog Input1 */
     {
@@ -190,57 +198,52 @@ void SYSTEME_CORRIGE_MODELE_ETAT_REEL_output(void)
                      &SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.AnalogInput_Channels,
                      &SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.angle, &parm);
     }
-
-    /* Gain: '<Root>/Gain' incorporates:
-     *  SignalConversion generated from: '<Root>/Vector Concatenate'
-     *  Sum: '<Root>/Sum1'
-     * */
-    u0 = (SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.u -
-          SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.AnalogInput1) *
-      SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.K[0] +
-      (SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.u -
-       SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.angle) *
-      SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.K[1];
-
-    /* Saturate: '<Root>/Saturation' incorporates:
-     *  Gain: '<Root>/Gain'
-     */
-    if (u0 > SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Saturation_UpperSat) {
-      u0 = SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Saturation_UpperSat;
-    } else {
-      if (u0 < SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Saturation_LowerSat) {
-        u0 = SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Saturation_LowerSat;
-      }
-    }
-
-    /* End of Saturate: '<Root>/Saturation' */
-
-    /* Sum: '<Root>/Sum' */
-    rtb_epsilon = u0 - SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.angle;
-
-    /* Gain: '<S38>/Proportional Gain' */
-    SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.ProportionalGain =
-      SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Kp * rtb_epsilon;
-
-    /* Gain: '<S27>/Derivative Gain' */
-    SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.DerivativeGain =
-      SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.PIDController_D * rtb_epsilon;
   }
 
+  /* Gain: '<Root>/Gain' incorporates:
+   *  Integrator: '<Root>/Integrator'
+   *  SignalConversion generated from: '<Root>/Vector Concatenate'
+   *  Sum: '<Root>/Sum1'
+   */
+  u0 = (SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.VectorConcatenate1[0] -
+        SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.AnalogInput1) *
+    SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.K[0] +
+    (SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.VectorConcatenate1[1] -
+     SYSTEME_CORRIGE_MODELE_ETAT_REEL_X.Integrator_CSTATE) *
+    SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.K[1];
+
+  /* Saturate: '<Root>/Saturation' incorporates:
+   *  Gain: '<Root>/Gain'
+   */
+  if (u0 > SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Saturation_UpperSat) {
+    u0 = SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Saturation_UpperSat;
+  } else {
+    if (u0 < SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Saturation_LowerSat) {
+      u0 = SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Saturation_LowerSat;
+    }
+  }
+
+  /* End of Saturate: '<Root>/Saturation' */
+
+  /* Sum: '<Root>/Sum' */
+  rtb_epsilon = u0 - SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.angle;
+
   /* Gain: '<S36>/Filter Coefficient' incorporates:
+   *  Gain: '<S27>/Derivative Gain'
    *  Integrator: '<S28>/Filter'
    *  Sum: '<S28>/SumD'
    */
   SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.FilterCoefficient =
-    (SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.DerivativeGain -
+    (SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.PIDController_D * rtb_epsilon -
      SYSTEME_CORRIGE_MODELE_ETAT_REEL_X.Filter_CSTATE) *
     SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.PIDController_N;
 
   /* Sum: '<S42>/Sum' incorporates:
+   *  Gain: '<S38>/Proportional Gain'
    *  Integrator: '<S33>/Integrator'
    */
-  u0 = (SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.ProportionalGain +
-        SYSTEME_CORRIGE_MODELE_ETAT_REEL_X.Integrator_CSTATE) +
+  u0 = (SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Kp * rtb_epsilon +
+        SYSTEME_CORRIGE_MODELE_ETAT_REEL_X.Integrator_CSTATE_m) +
     SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.FilterCoefficient;
 
   /* Saturate: '<S40>/Saturation' */
@@ -281,7 +284,7 @@ void SYSTEME_CORRIGE_MODELE_ETAT_REEL_output(void)
         double time = SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Timing.t[1];
         void *pData = (void *)&SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.AnalogInput1;
         int32_T size = 1*sizeof(real_T);
-        sendToAsyncQueueTgtAppSvc(500280523U, time, pData, size);
+        sendToAsyncQueueTgtAppSvc(135843491U, time, pData, size);
       }
     }
 
@@ -291,7 +294,7 @@ void SYSTEME_CORRIGE_MODELE_ETAT_REEL_output(void)
         double time = SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Timing.t[1];
         void *pData = (void *)&SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.angle;
         int32_T size = 1*sizeof(real_T);
-        sendToAsyncQueueTgtAppSvc(1936195079U, time, pData, size);
+        sendToAsyncQueueTgtAppSvc(2971269447U, time, pData, size);
       }
     }
 
@@ -301,14 +304,14 @@ void SYSTEME_CORRIGE_MODELE_ETAT_REEL_output(void)
         double time = SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Timing.t[1];
         void *pData = (void *)&SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.u;
         int32_T size = 1*sizeof(real_T);
-        sendToAsyncQueueTgtAppSvc(1792380958U, time, pData, size);
+        sendToAsyncQueueTgtAppSvc(3319604164U, time, pData, size);
       }
     }
-
-    /* Gain: '<S30>/Integral Gain' */
-    SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.IntegralGain =
-      SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Ki * 2.0 * rtb_epsilon;
   }
+
+  /* Gain: '<S30>/Integral Gain' */
+  SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.IntegralGain =
+    SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Ki * 2.0 * rtb_epsilon;
 }
 
 /* Model update function */
@@ -364,8 +367,11 @@ void SYSTEME_CORRIGE_MODELE_ETAT_REEL_derivatives(void)
   _rtXdot = ((XDot_SYSTEME_CORRIGE_MODELE_ETAT_REEL_T *)
              SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->derivs);
 
+  /* Derivatives for Integrator: '<Root>/Integrator' */
+  _rtXdot->Integrator_CSTATE = SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.angle;
+
   /* Derivatives for Integrator: '<S33>/Integrator' */
-  _rtXdot->Integrator_CSTATE = SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.IntegralGain;
+  _rtXdot->Integrator_CSTATE_m = SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.IntegralGain;
 
   /* Derivatives for Integrator: '<S28>/Filter' */
   _rtXdot->Filter_CSTATE = SYSTEME_CORRIGE_MODELE_ETAT_REEL_B.FilterCoefficient;
@@ -390,8 +396,12 @@ void SYSTEME_CORRIGE_MODELE_ETAT_REEL_initialize(void)
     }
   }
 
-  /* InitializeConditions for Integrator: '<S33>/Integrator' */
+  /* InitializeConditions for Integrator: '<Root>/Integrator' */
   SYSTEME_CORRIGE_MODELE_ETAT_REEL_X.Integrator_CSTATE =
+    SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Integrator_IC;
+
+  /* InitializeConditions for Integrator: '<S33>/Integrator' */
+  SYSTEME_CORRIGE_MODELE_ETAT_REEL_X.Integrator_CSTATE_m =
     SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.PIDController_InitialConditionForIntegrator;
 
   /* InitializeConditions for Integrator: '<S28>/Filter' */
@@ -579,10 +589,10 @@ RT_MODEL_SYSTEME_CORRIGE_MODELE_ETAT_REEL_T *SYSTEME_CORRIGE_MODELE_ETAT_REEL
   SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Timing.stepSize1 = 0.005;
 
   /* External mode info */
-  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.checksums[0] = (1159194831U);
-  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.checksums[1] = (4022816912U);
-  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.checksums[2] = (4031038767U);
-  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.checksums[3] = (192826109U);
+  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.checksums[0] = (2201733251U);
+  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.checksums[1] = (2322587122U);
+  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.checksums[2] = (3546351219U);
+  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.checksums[3] = (3752985062U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -648,16 +658,16 @@ RT_MODEL_SYSTEME_CORRIGE_MODELE_ETAT_REEL_T *SYSTEME_CORRIGE_MODELE_ETAT_REEL
   }
 
   /* Initialize Sizes */
-  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.numContStates = (2);/* Number of continuous states */
+  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.numContStates = (3);/* Number of continuous states */
   SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.numPeriodicContStates = (0);
                                       /* Number of periodic continuous states */
   SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.numY = (0);/* Number of model outputs */
   SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.numU = (0);/* Number of model inputs */
   SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.sysDirFeedThru = (0);/* The model is not direct feedthrough */
   SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.numSampTimes = (2);/* Number of sample times */
-  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.numBlocks = (24);/* Number of blocks */
-  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.numBlockIO = (8);/* Number of block outputs */
-  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.numBlockPrms = (32);/* Sum of parameter "widths" */
+  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.numBlocks = (27);/* Number of blocks */
+  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.numBlockIO = (7);/* Number of block outputs */
+  SYSTEME_CORRIGE_MODELE_ETAT_REEL_M->Sizes.numBlockPrms = (34);/* Sum of parameter "widths" */
   return SYSTEME_CORRIGE_MODELE_ETAT_REEL_M;
 }
 

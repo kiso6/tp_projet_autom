@@ -6,9 +6,9 @@
  *
  * Code generation for model "identification".
  *
- * Model version              : 1.7
+ * Model version              : 1.8
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue Apr 18 08:53:14 2023
+ * C source code generated on : Wed May 24 12:39:42 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -137,22 +137,22 @@ P_identification_T identification_P = {
   /* Computed Parameter: SineWave_Hsin
    * Referenced by: '<Root>/Sine Wave'
    */
-  0.0004999999791666669,
+  0.002499997395834147,
 
   /* Computed Parameter: SineWave_HCos
    * Referenced by: '<Root>/Sine Wave'
    */
-  0.99999987500000265,
+  0.99999687500162759,
 
   /* Computed Parameter: SineWave_PSin
    * Referenced by: '<Root>/Sine Wave'
    */
-  -0.0004999999791666669,
+  -0.002499997395834147,
 
   /* Computed Parameter: SineWave_PCos
    * Referenced by: '<Root>/Sine Wave'
    */
-  0.99999987500000265,
+  0.99999687500162759,
 
   /* Expression: 0.5
    * Referenced by: '<S1>/Gain'

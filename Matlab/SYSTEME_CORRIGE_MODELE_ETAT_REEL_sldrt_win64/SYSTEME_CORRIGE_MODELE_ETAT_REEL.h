@@ -6,9 +6,9 @@
  *
  * Code generation for model "SYSTEME_CORRIGE_MODELE_ETAT_REEL".
  *
- * Model version              : 1.12
+ * Model version              : 1.13
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue May 23 12:09:43 2023
+ * C source code generated on : Wed May 24 12:32:48 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -852,10 +852,9 @@
 /* Block signals (default storage) */
 typedef struct {
   real_T u;                            /* '<Root>/Step' */
+  real_T VectorConcatenate1[2];        /* '<Root>/Vector Concatenate1' */
   real_T AnalogInput1;                 /* '<Root>/Analog Input1' */
   real_T angle;                        /* '<Root>/Analog Input' */
-  real_T ProportionalGain;             /* '<S38>/Proportional Gain' */
-  real_T DerivativeGain;               /* '<S27>/Derivative Gain' */
   real_T FilterCoefficient;            /* '<S36>/Filter Coefficient' */
   real_T Saturation;                   /* '<S40>/Saturation' */
   real_T IntegralGain;                 /* '<S30>/Integral Gain' */
@@ -888,19 +887,22 @@ typedef struct {
 
 /* Continuous states (default storage) */
 typedef struct {
-  real_T Integrator_CSTATE;            /* '<S33>/Integrator' */
+  real_T Integrator_CSTATE;            /* '<Root>/Integrator' */
+  real_T Integrator_CSTATE_m;          /* '<S33>/Integrator' */
   real_T Filter_CSTATE;                /* '<S28>/Filter' */
 } X_SYSTEME_CORRIGE_MODELE_ETAT_REEL_T;
 
 /* State derivatives (default storage) */
 typedef struct {
-  real_T Integrator_CSTATE;            /* '<S33>/Integrator' */
+  real_T Integrator_CSTATE;            /* '<Root>/Integrator' */
+  real_T Integrator_CSTATE_m;          /* '<S33>/Integrator' */
   real_T Filter_CSTATE;                /* '<S28>/Filter' */
 } XDot_SYSTEME_CORRIGE_MODELE_ETAT_REEL_T;
 
 /* State disabled  */
 typedef struct {
-  boolean_T Integrator_CSTATE;         /* '<S33>/Integrator' */
+  boolean_T Integrator_CSTATE;         /* '<Root>/Integrator' */
+  boolean_T Integrator_CSTATE_m;       /* '<S33>/Integrator' */
   boolean_T Filter_CSTATE;             /* '<S28>/Filter' */
 } XDis_SYSTEME_CORRIGE_MODELE_ETAT_REEL_T;
 
@@ -1028,6 +1030,12 @@ struct P_SYSTEME_CORRIGE_MODELE_ETAT_REEL_T_ {
   real_T Step_YFinal;                  /* Expression: 0
                                         * Referenced by: '<Root>/Step'
                                         */
+  real_T Constant_Value;               /* Expression: 0
+                                        * Referenced by: '<Root>/Constant'
+                                        */
+  real_T Integrator_IC;                /* Expression: 0
+                                        * Referenced by: '<Root>/Integrator'
+                                        */
   real_T Saturation_UpperSat;          /* Expression: 9.5
                                         * Referenced by: '<Root>/Saturation'
                                         */
@@ -1062,8 +1070,8 @@ struct tag_RTM_SYSTEME_CORRIGE_MODELE_ETAT_REEL_T {
   boolean_T zCCacheNeedsReset;
   boolean_T derivCacheNeedsReset;
   boolean_T CTOutputIncnstWithState;
-  real_T odeY[2];
-  real_T odeF[4][2];
+  real_T odeY[3];
+  real_T odeF[4][3];
   ODE4_IntgData intgData;
   void *dwork;
 

@@ -6,9 +6,9 @@
  *
  * Code generation for model "SYSTEME_CORRIGE_MODELE_ETAT_REEL".
  *
- * Model version              : 1.12
+ * Model version              : 1.13
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue May 23 12:09:43 2023
+ * C source code generated on : Wed May 24 12:32:48 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -77,7 +77,7 @@ static DataTypeTransition rtPTransitions[] = {
   { (char_T *)(&SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.AnalogInput1_Channels), 6, 0,
     9 },
 
-  { (char_T *)(&SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Step_Time), 0, 0, 5 }
+  { (char_T *)(&SYSTEME_CORRIGE_MODELE_ETAT_REEL_P.Step_Time), 0, 0, 7 }
 };
 
 /* data type transition table for Parameters structure */

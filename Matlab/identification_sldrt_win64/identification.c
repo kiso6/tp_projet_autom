@@ -6,9 +6,9 @@
  *
  * Code generation for model "identification".
  *
- * Model version              : 1.7
+ * Model version              : 1.8
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue Apr 18 08:53:14 2023
+ * C source code generated on : Wed May 24 12:39:42 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -34,7 +34,7 @@ static double SLDRTBoardOptions0[] = {
 /* list of Simulink Desktop Real-Time timers */
 const int SLDRTTimerCount = 1;
 const double SLDRTTimers[2] = {
-  0.001, 0.0,
+  0.005, 0.0,
 };
 
 /* list of Simulink Desktop Real-Time boards */
@@ -148,7 +148,7 @@ void identification_output(void)
       double time = identification_M->Timing.t[1];
       void *pData = (void *)&identification_B.angle;
       int32_T size = 1*sizeof(real_T);
-      sendToAsyncQueueTgtAppSvc(1731983012U, time, pData, size);
+      sendToAsyncQueueTgtAppSvc(1662794648U, time, pData, size);
     }
   }
 
@@ -158,7 +158,7 @@ void identification_output(void)
       double time = identification_M->Timing.t[1];
       void *pData = (void *)&identification_B.tension;
       int32_T size = 1*sizeof(real_T);
-      sendToAsyncQueueTgtAppSvc(1747989888U, time, pData, size);
+      sendToAsyncQueueTgtAppSvc(973419381U, time, pData, size);
     }
   }
 }
@@ -194,7 +194,7 @@ void identification_update(void)
     identification_M->Timing.stepSize0 * 4294967296.0;
 
   {
-    /* Update absolute timer for sample time: [0.001s, 0.0s] */
+    /* Update absolute timer for sample time: [0.005s, 0.0s] */
     /* The "clockTick1" counts the number of times the code of this task has
      * been executed. The absolute time is the multiplication of "clockTick1"
      * and "Timing.stepSize1". Size of "clockTick1" ensures timer will not
@@ -329,7 +329,7 @@ RT_MODEL_identification_T *identification(void)
 
     /* task periods */
     identification_M->Timing.sampleTimes[0] = (0.0);
-    identification_M->Timing.sampleTimes[1] = (0.001);
+    identification_M->Timing.sampleTimes[1] = (0.005);
 
     /* task offsets */
     identification_M->Timing.offsetTimes[0] = (0.0);
@@ -346,14 +346,14 @@ RT_MODEL_identification_T *identification(void)
   }
 
   rtmSetTFinal(identification_M, -1);
-  identification_M->Timing.stepSize0 = 0.001;
-  identification_M->Timing.stepSize1 = 0.001;
+  identification_M->Timing.stepSize0 = 0.005;
+  identification_M->Timing.stepSize1 = 0.005;
 
   /* External mode info */
-  identification_M->Sizes.checksums[0] = (2248274865U);
-  identification_M->Sizes.checksums[1] = (4150780595U);
-  identification_M->Sizes.checksums[2] = (3732532871U);
-  identification_M->Sizes.checksums[3] = (270198421U);
+  identification_M->Sizes.checksums[0] = (3646123820U);
+  identification_M->Sizes.checksums[1] = (1623756794U);
+  identification_M->Sizes.checksums[2] = (4258268896U);
+  identification_M->Sizes.checksums[3] = (853876963U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -371,8 +371,8 @@ RT_MODEL_identification_T *identification(void)
   }
 
   identification_M->solverInfoPtr = (&identification_M->solverInfo);
-  identification_M->Timing.stepSize = (0.001);
-  rtsiSetFixedStepSize(&identification_M->solverInfo, 0.001);
+  identification_M->Timing.stepSize = (0.005);
+  rtsiSetFixedStepSize(&identification_M->solverInfo, 0.005);
   rtsiSetSolverMode(&identification_M->solverInfo, SOLVER_MODE_SINGLETASKING);
 
   /* block I/O */

@@ -76,7 +76,7 @@ figure(3)
 step(2*commande_opt)
 title("commande lqr")
 
-% Placement de pôles
+%% Placement de pôles
 %Specifications de notre cahier des charges
 tr=6;% 10 sec pour s'établir à 5%
 D=0.05;% pourcentage du premier dépassement à 25%
@@ -85,7 +85,7 @@ w0=tr/(6*z);
 p1=-z*w0-w0*sqrt((z^2)-1);
 p2=-z*w0+w0*sqrt((z^2)-1);
 
-paul=[-0.1+0.5i -0.1-0.5i]%[-0.2112+1.235i -0.2112-1.235i];
+paul=[p1 p2];%[-0.1+0.5i -0.1-0.5i]%[-0.2112+1.235i -0.2112-1.235i];
 K= place(A,B,paul)
 sys_corr_poles=ss(A-B*K,B,C,0);
 commande_poles=ss(A-B*K,B,-K,0);

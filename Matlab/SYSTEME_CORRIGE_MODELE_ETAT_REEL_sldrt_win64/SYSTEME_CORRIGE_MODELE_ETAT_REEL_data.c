@@ -6,9 +6,9 @@
  *
  * Code generation for model "SYSTEME_CORRIGE_MODELE_ETAT_REEL".
  *
- * Model version              : 1.12
+ * Model version              : 1.13
  * Simulink Coder version : 9.3 (R2020a) 18-Nov-2019
- * C source code generated on : Tue May 23 12:09:43 2023
+ * C source code generated on : Wed May 24 12:32:48 2023
  *
  * Target selection: sldrt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -25,7 +25,7 @@ P_SYSTEME_CORRIGE_MODELE_ETAT_REEL_T SYSTEME_CORRIGE_MODELE_ETAT_REEL_P = {
   /* Variable: K
    * Referenced by: '<Root>/Gain'
    */
-  { 0.28665931642778392, 0.22050716648291085 },
+  { 2.3150489953937647, 2.2050716648291067 },
 
   /* Variable: Ki
    * Referenced by: '<S30>/Integral Gain'
@@ -164,6 +164,16 @@ P_SYSTEME_CORRIGE_MODELE_ETAT_REEL_T SYSTEME_CORRIGE_MODELE_ETAT_REEL_P = {
 
   /* Expression: 0
    * Referenced by: '<Root>/Step'
+   */
+  0.0,
+
+  /* Expression: 0
+   * Referenced by: '<Root>/Constant'
+   */
+  0.0,
+
+  /* Expression: 0
+   * Referenced by: '<Root>/Integrator'
    */
   0.0,
 
